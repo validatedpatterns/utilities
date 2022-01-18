@@ -7,7 +7,7 @@ This is still work in progress so we will be re-arranging a lot of the code in t
 
 ## Requirements
 
-The OpenShiftUtils directory contains a classes that can be used in an OpenShift cluster environment.
+The openshift directory contains a classes that can be used in an OpenShift cluster environment.
 The class library uses the [OpenShift Rest CLI](https://github.com/openshift/openshift-restclient-python)
 to make the proper calls to the OpenShift api.
 
@@ -21,6 +21,6 @@ the package on your system using DNF, apt-get or pip.
 | Directory | Description |
 | ------ | ------ |
 | aws-tools | This directory contains some S3 tools and EC2  tools |
-
+| openshift | This directory contains the helper classes for openshift |
 
 If you have any questions please contact [Lester Claudio](claudiol@redhat.com) or [Jonny Rickard](jrickard@redaht.com)

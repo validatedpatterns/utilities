@@ -98,7 +98,7 @@ for i in "${GHREPOS[@]}"; do
   git remote add fork -f "git@github.com:${USERGITHUB}/${i}.git" | tee -a "$LOG"
   git checkout -b "${BRANCH}" | tee -a "$LOG"
   # Not yet sure about --allow-unrelated-histories seems medical-diagnosis barfs without it
-  git merge --no-edit -s subtree -Xtheirs -Xsubtree=common "common-upstream/${MAINBRANCH}" --allow-unrelated-histories | tee -a "$LOG"
+  git merge --no-edit -s subtree -Xtheirs -Xsubtree=common "common-upstream/${MAINBRANCH}" | tee -a "$LOG"
 
   # Check that no commit left conflicts
   if grep -IR -e '<<<' -e '>>>' . 2>/dev/null; then

@@ -132,6 +132,8 @@ for i in "${GHREPOS[@]}"; do
         continue
       fi
       echo "Error while creating PR: ${gout}"
+    else
+      echo "PR created: ${gout}"
     fi
   fi
   popd

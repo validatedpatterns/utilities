@@ -36,7 +36,7 @@ function usage {
 
 PRCREATE=n
 SKIPCOMMONCHECK=n
-GHREPOS=
+GHREPOS=()
 
 if ! command -v gh &> /dev/null; then
   echo "gh command not found. Please install it first"
@@ -86,7 +86,7 @@ if [ -z "${USERGITHUB}" ]; then
   exit 1
 fi
 
-if [ -z "${GHREPOS}" ]; then
+if [ ${#GHREPOS[@]} -eq 0 ]; then
   echo "You must specify the repos to work on. Multiple repos should be separated by commas"
   usage
   exit 1

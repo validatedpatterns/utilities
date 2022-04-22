@@ -31,10 +31,12 @@ function usage {
   echo "    -u|--usergithub <user>      - Mandatory. The PR will be pushed into the ${BRANCH} of a fork belonging to <user>"
   echo "                                  The forked repo in the users space, must exist"
   echo "    -r|--repos <repo1,repo2,..> - Mandatory. List of repos to update the common/ subtree in. Separated by comma"
+  echo "    -s|--skip-common-check      - Optional. Won't error out if project's common and upstream common differ"
 }
 
 PRCREATE=n
-GHREPOS=
+SKIPCOMMONCHECK=n
+GHREPOS=()
 
 if ! command -v gh &> /dev/null; then
   echo "gh command not found. Please install it first"
@@ -42,7 +44,7 @@ if ! command -v gh &> /dev/null; then
 fi
 # Parse options. Note that options may be followed by one colon to indicate
 # they have a required argument
-if ! getopt -o hpu:r: -l help,prcreate,usergithub:repos:; then
+if ! getopt -o hpsu:r: -l help,prcreate,skip-common-check,usergithub:repos:; then
     # Error, getopt will put out a message for us
     usage
     exit 1
@@ -57,6 +59,9 @@ while [ $# -gt 0 ]; do
       ;;
     -p|--prcreate)
       PRCREATE="y"
+      ;;
+    -s|--skip-common-check)
+      SKIPCOMMONCHECK="y"
       ;;
     -u|--usergithub)
       USERGITHUB="$2"
@@ -81,7 +86,7 @@ if [ -z "${USERGITHUB}" ]; then
   exit 1
 fi
 
-if [ -z "${GHREPOS}" ]; then
+if [ ${#GHREPOS[@]} -eq 0 ]; then
   echo "You must specify the repos to work on. Multiple repos should be separated by commas"
   usage
   exit 1
@@ -97,7 +102,6 @@ for i in "${GHREPOS[@]}"; do
   git remote add common-upstream -f ../common | tee -a "$LOG"
   git remote add fork -f "git@github.com:${USERGITHUB}/${i}.git" | tee -a "$LOG"
   git checkout -b "${BRANCH}" | tee -a "$LOG"
-  # Not yet sure about --allow-unrelated-histories seems medical-diagnosis barfs without it
   git merge --no-edit -s subtree -Xtheirs -Xsubtree=common "common-upstream/${MAINBRANCH}" | tee -a "$LOG"
 
   # Check that no commit left conflicts
@@ -107,11 +111,17 @@ for i in "${GHREPOS[@]}"; do
   fi
 
   # Check that upstream common/ and the subtree common/ are identical (add --no-dereference due to our commmon -> symlink)
+  set +e
   diff -urN --exclude='.git' --no-dereference ../common ./common 2>&1 | tee "$LOG"
   ret=$?
+  set -e
   if [ $ret -ne 0 ]; then
-    echo "The diff command returned $ret. ABORTING here."
-    exit 1
+    if [ "$SKIPCOMMONCHECK" == 'n' ]; then
+      echo "The diff command returned $ret. ABORTING here."
+      exit 1
+    else
+      echo "The diff command returned $ret. Not aborting here due to --skip-common-check being passed. Proceed with caution!"
+    fi
   fi
 
   git push fork "${BRANCH}" -f | tee -a "$LOG"

@@ -32,24 +32,9 @@ function parse_yaml {
    }'
 }
 
-while ( true ) 
-do
-  log -n "Please enter location of values-global.yaml: "
-  read location
-  echo $location
-  if [ "$location." == "." ]; then
-    continue
-  else
-    if [ -d $location ]; then
-      break;
-    else
-      log -n "Please enter location of values-global.yaml: LOCATION MUST BE A DIRECTORY. Press Enter to continue"
-      read dummy
-      continue
-    fi
-  fi
-done
-
+#
+# User login to registry
+#
 function registryLogin {
   let attempts=0
   while ( true )
@@ -69,6 +54,24 @@ function registryLogin {
   done
 }
 
+
+while ( true ) 
+do
+  log -n "Please enter location of values-global.yaml: "
+  read location
+  echo $location
+  if [ "$location." == "." ]; then
+    continue
+  else
+    if [ -d $location ]; then
+      break;
+    else
+      log -n "Please enter location of values-global.yaml: LOCATION MUST BE A DIRECTORY. Press Enter to continue"
+      read dummy
+      continue
+    fi
+  fi
+done
 
 log -n "Reading imageregistry values from $location/values-global.yaml ... "
 eval $(parse_yaml values-global.yaml)

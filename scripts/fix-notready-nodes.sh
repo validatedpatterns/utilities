@@ -61,15 +61,24 @@ oc get nodes
 
 while ( true )
 do
-  log -n "Waiting for routes ... "
+  log -n "Waiting for routes #    "
+  sleep .5
   oc get routes -n openshift-console > /dev/null 2>&1
+  log -n "Waiting for routes ##   "
+  sleep .5
   if [ $? == 0 ]; then
-    echo "done"
-    echo "You should be able to get to the OpenShift console using the following routes"
-    oc get routes -n openshift-console 
-    break
+    CLEAN=$(oc get routes -n openshift-console 2>&1 | grep -v error | grep -i console )
+    if [ "$CLEAN." != "." ]; then
+        echo "You should be able to get to the OpenShift console using the following routes"
+        oc get routes -n openshift-console 
+    	break
+    else
+	continue
+    fi
   fi
+  sleep .5
+  log -n "Waiting for routes ###  "
   sleep 1
-  log -n "Waiting for routes     "
+  log -n "Waiting for routes      "
   sleep 1
 done

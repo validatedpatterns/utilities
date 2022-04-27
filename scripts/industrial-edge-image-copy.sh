@@ -80,9 +80,7 @@ log "Reading imageregistry values from $location/values-global.yaml ... done"
 # User needs to login to the registry
 registryLogin
 
-if [ -f $LOGFILE ]; then
-  rm -f $LOGFILE
-fi
+rm -f $LOGFILE
 touch $LOGFILE
 
 for image in iot-consumer iot-anomaly-detection iot-frontend iot-software-sensor

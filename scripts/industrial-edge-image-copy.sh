@@ -1,6 +1,7 @@
 #!/bin/sh
 
 LOGFILE=/tmp/skopeo-copy.log
+ASK=true
 
 # Function log
 # Arguments:
@@ -54,8 +55,20 @@ function registryLogin {
   done
 }
 
+while getopts "d:l:" opt
+do
+    case $opt in
+        (d) location=$OPTARG
+	    ASK=false
+            ;;
+        (l) LOGFILE=$OPTARG
+            ;;
+        (*) printf "Illegal option '-%s'\n" "$opt" && exit 1
+            ;;
+    esac
+done
 
-while ( true ) 
+while ( $ASK ) 
 do
   log -n "Please enter location of values-global.yaml: "
   read location
@@ -72,9 +85,8 @@ do
     fi
   fi
 done
-
 log -n "Reading imageregistry values from $location/values-global.yaml ... "
-eval $(parse_yaml values-global.yaml)
+eval $(parse_yaml $location/values-global.yaml)
 log "Reading imageregistry values from $location/values-global.yaml ... done"
 
 # User needs to login to the registry

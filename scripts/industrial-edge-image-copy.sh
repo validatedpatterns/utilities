@@ -1,10 +1,6 @@
 #!/bin/sh
 
-#
-# This script uses skopeo to copy the industrial edge boostrap images for
-# iot-consumer iot-anomaly-detection iot-frontend iot-software-sensor
-# to the image registry that is defined in the values-global.yaml file.
-#
+LOGFILE=/tmp/skopeo-copy.log
 
 # Function log
 # Arguments:
@@ -19,19 +15,6 @@ function log {
     fi
 }
 
-#
-# Parses a simple yaml file and returns
-#
-# It understands files such as:
-#
-#  ## global definitions
-#  global:
-#    debug: yes
-#    verbose: no
-#    debugging:
-#      detailed: no
-#      header: "debugging started"
-#
 function parse_yaml {
    local prefix=$2
    local s='[[:space:]]*' w='[a-zA-Z0-9_]*' fs=$(echo @|tr @ '\034')
@@ -49,13 +32,6 @@ function parse_yaml {
    }'
 }
 
-#
-# SCRIPT STARTS HERE
-#
-
-#
-# We first ask for the location, or directory, where the values-global.yaml is located.
-#
 while ( true ) 
 do
   log -n "Please enter location of values-global.yaml: "
@@ -74,35 +50,50 @@ do
   fi
 done
 
-#
-# Now we parse the values-global.yaml file
-#
-log -n "Reading values from $location/values-global.yaml ... "
+function registryLogin {
+  let attempts=0
+  while ( true )
+  do
+    log "Need to log in onto the target registry [ $global_imageregistry_hostname ]"
+    skopeo login  $global_imageregistry_hostname
+    if [ $? == 0 ]; then
+      break
+    else
+      continue
+      attempts++
+      if [ $attempts -gt 3 ]; then
+        log "Too many attempts ... try again"
+	exit
+      fi
+    fi
+  done
+}
+
+
+log -n "Reading imageregistry values from $location/values-global.yaml ... "
 eval $(parse_yaml values-global.yaml)
-log "Reading values from $location/values-global.yaml ... done"
+log "Reading imageregistry values from $location/values-global.yaml ... done"
 
-#
-# Create the image-copy.log file
-#
-touch "image-copy.log"
+# User needs to login to the registry
+registryLogin
 
-#
-# Loop through the image repos and copy to the destination defined in values-global.yaml
-#
+if [ -f $LOGFILE ]; then
+  rm -f $LOGFILE
+fi
+touch $LOGFILE
+
 for image in iot-consumer iot-anomaly-detection iot-frontend iot-software-sensor
 do
    log -n "Copying docker://quay.io/hybridcloudpatterns/$image:latest to docker://$global_imageregistry_hostname/$global_imageregistry_account/$image:latest ===>  " 
-   echo "Copying: docker://quay.io/hybridcloudpatterns/$image:latest to docker://$global_imageregistry_hostname/$global_imageregistry_account/$image:latest" >> skopeo-copy.log
-   
-   skopeo copy docker://quay.io/hybridcloudpatterns/$image:latest docker://$global_imageregistry_hostname/$global_imageregistry_account/$image:latest >> skopeo-copy.log 2>&1
-   
+   echo "START: Copying docker://quay.io/hybridcloudpatterns/$image:latest to docker://$global_imageregistry_hostname/$global_imageregistry_account/$image:latest" >> $LOGFILE
+   skopeo copy docker://quay.io/hybridcloudpatterns/$image:latest docker://$global_imageregistry_hostname/$global_imageregistry_account/$image:latest >> $LOGFILE
    if [ $? == 0 ]; then
      log "Copying docker://quay.io/hybridcloudpatterns/$image:latest to docker://$global_imageregistry_hostname/$global_imageregistry_account/$image:latest ===> done" 
-     echo "DONE: docker://$global_imageregistry_hostname/$global_imageregistry_account/$image:latest" >> skopeo-copy.log
+     echo "DONE: docker://$global_imageregistry_hostname/$global_imageregistry_account/$image:latest" >> $LOGFILE
    else
      log "Copying docker://quay.io/hybridcloudpatterns/$image:latest to docker://$global_imageregistry_hostname/$global_imageregistry_account/$image:latest: ERROR" 
-     log "Please see skopeo-copy.log for ERROR"
-     echo "ERROR: docker://$global_imageregistry_hostname/$global_imageregistry_account/$image:latest" >> skopeo-copy.log
+     log "Please see $LOGFILE for ERROR"
+     echo "ERROR: docker://$global_imageregistry_hostname/$global_imageregistry_account/$image:latest" >> $LOGFILE
    fi
 done
 

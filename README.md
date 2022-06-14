@@ -22,5 +22,7 @@ the package on your system using DNF, apt-get or pip.
 | ------ | ------ |
 | aws-tools | This directory contains some S3 tools and EC2  tools |
 | openshift | This directory contains the helper classes for openshift |
+| acm_import | Playbook and role to automatically import clusters in ACM |
+| jekyll-container | Takes text written in your favorite markup language and uses layouts to create a static website. |
 
 If you have any questions please contact [Lester Claudio](claudiol@redhat.com) or [Jonny Rickard](jrickard@redaht.com)

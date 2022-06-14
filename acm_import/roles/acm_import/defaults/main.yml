@@ -1,0 +1,7 @@
+clustergroup: region-one
+ocm_iam_policy_controller: true
+ocm_search_controller: true
+ocm_policy_controller: true
+ocm_cert_policy_controller: true
+ocm_application_manager: true
+ocm_argo_cd_cluster: false

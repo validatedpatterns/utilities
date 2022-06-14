@@ -1,0 +1,80 @@
+- name: "Verify valid cluster name"
+  assert:
+    that: region_cluster_name is regex('^[a-z0-9]([-a-z0-9]*[a-z0-9])?$')
+    fail_msg: "region_cluster_name failed regex validation"
+    success_msg: "{{ region_cluster_name }} is valid"
+
+- name: "Check if ManagedCluster is registered"
+  kubernetes.core.k8s_info:
+    kubeconfig: "{{ HUBCONFIG }}"
+    api_version: cluster.open-cluster-management.io/v1
+    kind: ManagedCluster
+    name: "{{ region_cluster_name }}"
+  register: ocm_mc_obj
+
+- name: "Set fact if regional cluster is registered"
+  set_fact:
+    ocm_mc_registered: "{{ ocm_mc_obj.resources | length == 1 }}"
+
+- name: Register Managed Cluster
+  block:
+    - name: "Create regional ManagedCluster"
+      kubernetes.core.k8s:
+        state: present
+        kubeconfig: "{{ HUBCONFIG }}"
+        template: managedcluster.yml.j2
+        wait: true
+        wait_condition:
+          type: 'HubAcceptedManagedCluster'
+          reason: 'HubClusterAdminAccepted'
+          status: 'True'
+        wait_timeout: 60
+
+    - name: "Create regional KlusterAddonConfig"
+      kubernetes.core.k8s:
+        state: present
+        kubeconfig: "{{ HUBCONFIG }}"
+        template: klusterletaddonconfig.yml.j2
+  when:
+    - not ocm_mc_registered
+
+- name: "Pull ManagedClusterJoined Status"
+  set_fact:
+    ocm_mc_status: "{{ lookup('kubernetes.core.k8s', kubeconfig=HUBCONFIG, api_version='cluster.open-cluster-management.io/v1', kind='ManagedCluster', resource_name=region_cluster_name) | json_query(query) }}"
+  vars:
+    query: "status.conditions[?type == 'ManagedClusterJoined'].status"
+
+- name: "Determine if Managed Cluster has Joined"
+  set_fact:
+    ocm_mc_reported: "{{ ocm_mc_status | length == 1 and ocm_mc_status[0] == 'True' }}"
+
+- name: Attach Managed Cluster
+  block:
+    - name: "[HUB] Derive import name"
+      set_fact:
+        cluster_import: "{{ region_cluster_name }}-import"
+
+    - name: "[HUB] Get CRDs from Hub for the new ManagedCluster"
+      set_fact:
+        import_crds: "{{ lookup('k8s', kubeconfig=HUBCONFIG, api_version='v1', kind='Secret', namespace=region_cluster_name, resource_name=cluster_import) | json_query(query) }}"
+      vars:
+        query: "data.\"crds.yaml\""
+
+    - name: "[HUB] Get ROs from Hub for the new ManagedCluster"
+      set_fact:
+        import_ros: "{{ lookup('k8s', kubeconfig=HUBCONFIG, api_version='v1', kind='Secret', namespace=region_cluster_name, resource_name=cluster_import) | json_query(query) }}"
+      vars:
+        query: "data.\"import.yaml\""
+
+    - name: "[MC] Apply CRDs to new ManagedCluster"
+      kubernetes.core.k8s:
+        state: present
+        kubeconfig: "{{ REGIONCONFIG }}"
+        definition: "{{ import_crds | b64decode }}"
+
+    - name: "[MC] Apply ROs to new ManagedCluster"
+      kubernetes.core.k8s:
+        state: present
+        kubeconfig: "{{ REGIONCONFIG }}"
+        definition: "{{ import_ros | b64decode }}"
+  when: not ocm_mc_reported

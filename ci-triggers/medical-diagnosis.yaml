@@ -11,8 +11,6 @@ triggers:
   - 4.12: azure 
   - 4.11: aws
   - 4.10: gcp
-  - 4.9:  azure
-  - 4.8:  aws
 
   subscriptions:
   - openshift-gitops: main

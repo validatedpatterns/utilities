@@ -7,4 +7,4 @@ Then run:
 
 After a minute or two the cluster will be imported on the hub.
 
-By default it adds the 'clusterGroup=region-one' label. This can be customized with -e clustergroup='foo'
+By default it adds the 'clusterGroup=group-one' label. This can be customized with -e clustergroup='foo'

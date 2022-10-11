@@ -1,0 +1,15 @@
+triggers:
+  branches:
+  - main:
+    - 4.12
+    - 4.11
+  - 'v1.1':
+    - 4.10
+
+  openshift:
+  - 4.12: gcp 
+  - 4.11: azure
+  - 4.10: aws
+
+  subscriptions:
+  - openshift-gitops: main

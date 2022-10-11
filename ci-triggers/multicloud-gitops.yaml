@@ -12,16 +12,16 @@ triggers:
       platform: aws
   
   openshift:
-  - ocp: '4.8'
-    platform: gcp
-  - ocp: '4.9'
-    platform: aws
-  - ocp: '4.10'
+  - ocp: '4.12'
     platform: azure
   - ocp: '4.11'
     platform: gcp
-  - ocp: '4.12'
+  - ocp: '4.10'
     platform: azure
+  - ocp: '4.9'
+    platform: aws
+  - ocp: '4.8'
+    platform: gcp
      
   subscriptions:
   - ocp: '4.11'

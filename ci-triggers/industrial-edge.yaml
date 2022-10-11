@@ -1,19 +1,31 @@
 triggers:
   branches:
-  - main:
-    - 4.12
-    - 4.11
-  - 'v2.2':
-    - 4.10
-    - 4.9
-    - 4.8
+  - name: main
+    versions:
+    - '4.12'
+    - '4.11'
+  - name: 'v2.2'
+    versions:
+    - '4.10'
+    - '4.9'
+    - '4.8'
 
   openshift:
-  - 4.12: aws 
-  - 4.11: gcp
-  - 4.10: azure
-  - 4.9:  aws
-  - 4.8:  gcp
+  - version: '4.12'
+    branch: main
+    platform: aws
+  - version: '4.11'
+    branch: main
+    platform: gcp
+  - version: '4.10'
+    branch: 'v2.2'
+    platform: azure
+  - version: '4.9'
+    branch: 'v2.2'
+    platform: aws 
+  - version: '4.8'
+    branch: 'v2.2'
+    platform: gcp 
 
   subscriptions:
   - openshift-gitops: main

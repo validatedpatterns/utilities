@@ -5,19 +5,19 @@ triggers:
     - '4.12'
     - '4.11'
   - name: 'v1.1'
-    versions:  
+    versions:
     - '4.10'
 
   openshift:
   - version: '4.12'
     branch: main
-    platform: gcp 
+    platform: gcp
   - version: '4.11'
     branch: main
-    platform: azure 
+    platform: azure
   - version: '4.10'
     branch: 'v1.1'
-    platform: aws 
+    platform: aws
 
   subscriptions:
   - openshift-gitops: main

@@ -22,10 +22,10 @@ triggers:
     platform: azure
   - version: '4.9'
     branch: 'v2.2'
-    platform: aws 
+    platform: aws
   - version: '4.8'
     branch: 'v2.2'
-    platform: gcp 
+    platform: gcp
 
   subscriptions:
   - openshift-gitops: main

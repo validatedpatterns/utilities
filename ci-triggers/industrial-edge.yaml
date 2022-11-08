@@ -1,3 +1,5 @@
+owners:
+  - claudiol
 triggers:
   branches:
   - name: main

@@ -1,3 +1,5 @@
+owners:
+  - bandini
 triggers:
   branches:
   - name: main

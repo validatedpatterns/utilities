@@ -1,3 +1,5 @@
+owners:
+  - jrickard
 triggers:
   branches:
   - name: main

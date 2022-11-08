@@ -1,3 +1,5 @@
+owners:
+  - Martin Jackson
 triggers:
   branches:
   - name: main

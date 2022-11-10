@@ -1,3 +1,6 @@
+shortName: mcgitops
+fullName: MultiCloudGitops
+webHookName: ''
 owners:
   - bandini
 triggers:
@@ -15,19 +18,28 @@ triggers:
   openshift:
   - version: '4.12'
     branch: main
-    platform: aws
+    platforms:
+      - aws
   - version: '4.11'
     branch: main
-    platform: gcp
+    platforms:
+      - gcp
+    buildType: stable
   - version: '4.10'
     branch: main
-    platform: azure
+    platforms:
+      - azure
+    buildType: stable
   - version: '4.9'
     branch: 'v1.1'
-    platform: aws
+    platforms:
+      - aws
+    buildType: stable
   - version: '4.8'
     branch: 'v1.1'
-    platform: gcp
+    platforms:
+      - gcp
+    buildType: stable
 
   subscriptions:
   - openshift-gitops: main

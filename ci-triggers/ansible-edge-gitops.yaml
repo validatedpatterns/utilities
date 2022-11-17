@@ -1,3 +1,6 @@
+shortName: aegitops
+fullName: AnsibleEdgeGitops
+webHookName: ''
 owners:
   - Martin Jackson
 triggers:
@@ -13,13 +16,18 @@ triggers:
   openshift:
   - version: '4.12'
     branch: main
-    platform: gcp
+    platforms:
+      - gcp
   - version: '4.11'
     branch: main
-    platform: azure
+    platforms:
+      - azure
+    buildType: stable
   - version: '4.10'
     branch: 'v1.1'
-    platform: aws
+    platforms:
+      - aws
+    buildType: stable
 
   subscriptions:
   - openshift-gitops: main

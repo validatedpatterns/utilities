@@ -1,3 +1,6 @@
+shortName: medicaldiag
+fullName: MedicalDiagnosis
+webHookName: 'medical-diagnosis'
 owners:
   - jrickard
 triggers:
@@ -13,13 +16,23 @@ triggers:
   openshift:
   - version: '4.12'
     branch: main
-    platform: azure
+    platforms:
+      - azure
   - version: '4.11'
+    buildType: stable
     branch: 'stable-4.11-v2.3'
-    platform: aws
+    platforms:
+      - aws
   - version: '4.10'
     branch: 'stable-4.11-v2.3'
-    platform: gcp
+    platforms:
+      - gcp
+    buildType: stable
+
+  github:
+    - version: '4.11'
+      platforms:
+        - azure
 
   subscriptions:
   - openshift-gitops: main

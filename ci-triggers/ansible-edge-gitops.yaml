@@ -11,17 +11,18 @@ triggers:
     - '4.11'
   - name: 'v1.1'
     versions:
+    - '4.11'
     - '4.10'
 
   openshift:
   - version: '4.12'
     branch: main
     platforms:
-      - gcp
+      - aws
   - version: '4.11'
     branch: main
     platforms:
-      - azure
+      - aws
     buildType: stable
   - version: '4.10'
     branch: 'v1.1'

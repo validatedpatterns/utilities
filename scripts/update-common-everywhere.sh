@@ -105,7 +105,7 @@ for i in "${GHREPOS[@]}"; do
   git merge --no-edit -s subtree -Xtheirs -Xsubtree=common "common-upstream/${MAINBRANCH}" | tee -a "$LOG"
 
   # Check that no commit left conflicts
-  if grep -IR -e '<<<' -e '>>>' . 2>/dev/null; then
+  if grep -IR -e '^<<<' -e '^>>>' . 2>/dev/null; then
     echo "Repo $i has conflicts after merge"
     exit 1
   fi

@@ -10,5 +10,5 @@ build: ## Build the container locally
 
 .PHONY: upload
 upload: build ## Builds and then uploads the container to quay.io/hybridcloudpatterns/homepage-container:latest
-	@echo "Uploading the container to quay.io/hybridcloudpatterns/homepage-container:latest"
+	@echo "Uploading the container to quay.io/hybridcloudpatterns/homepage-container latest"
 	buildah push localhost/homepage-container:latest quay.io/hybridcloudpatterns/homepage-container:latest

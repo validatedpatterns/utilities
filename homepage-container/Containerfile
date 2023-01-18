@@ -1,10 +1,7 @@
 FROM --platform=$BUILDPLATFORM alpine:3.17 as build
 
 RUN apk add --no-cache hugo build-base gcc bash cmake git gcompat curl ruby
-RUN curl -L -o /usr/local/bin/proof-html.rb https://raw.githubusercontent.com/anishathalye/proof-html/master/proof-html.rb && chmod +x /usr/local/bin/proof-html.rb
-# install both bundler 1.x and 2.x incase you're running
-# old gem files
-# https://bundler.io/guides/bundler_2_upgrade.html#faq
+RUN curl https://htmltest.wjdp.uk | bash -s -- -b /usr/local/bin
 RUN gem install bundler && echo -e 'source "https://rubygems.org"\ngem "asciidoctor"\n' > Gemfile && bundle install
 EXPOSE 4000
 

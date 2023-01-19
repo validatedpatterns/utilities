@@ -1,0 +1,9 @@
+#!/bin/sh
+
+ad="/usr/bin/asciidoctor"
+
+$ad --trace --verbose \
+  --no-header-footer \
+  --attribute experimental=true
+  --attribute icons=font \
+  -

@@ -28,6 +28,7 @@ triggers:
     branch: 'v2.3'
     platforms:
       - gcp
+    buildType: stable
   - version: '4.10'
     branch: 'v2.2'
     platforms:

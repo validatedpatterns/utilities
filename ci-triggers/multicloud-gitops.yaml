@@ -20,7 +20,6 @@ triggers:
     branch: main
     platforms:
       - aws
-    buildType: nightly
   - version: '4.11'
     branch: main
     platforms:

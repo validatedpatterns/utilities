@@ -2,7 +2,7 @@ FROM --platform=$BUILDPLATFORM alpine:3.17 as build
 
 RUN apk add --no-cache hugo build-base gcc bash cmake git gcompat curl ruby
 RUN curl https://htmltest.wjdp.uk | bash -s -- -b /usr/local/bin
-RUN gem install bundler && echo -e 'source "https://rubygems.org"\ngem "asciidoctor"\n' > Gemfile && bundle install
+RUN gem install bundler && echo -e 'source "https://rubygems.org"\ngem "asciidoctor"\ngem "rouge"\n' > Gemfile && bundle install
 COPY asciidoctor /usr/local/bin/asciidoctor
 EXPOSE 4000
 

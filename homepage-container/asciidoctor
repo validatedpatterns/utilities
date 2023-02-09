@@ -6,4 +6,5 @@ $ad --trace --verbose \
   --no-header-footer \
   --attribute experimental=true \
   --attribute icons=font \
+  -a source-highlighter=rouge -a sectanchors= \
   -

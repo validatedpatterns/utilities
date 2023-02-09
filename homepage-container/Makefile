@@ -12,3 +12,7 @@ build: ## Build the container locally
 upload: build ## Builds and then uploads the container to quay.io/hybridcloudpatterns/homepage-container:latest
 	@echo "Uploading the container to quay.io/hybridcloudpatterns/homepage-container latest"
 	buildah push localhost/homepage-container:latest quay.io/hybridcloudpatterns/homepage-container:latest
+
+.PHONY: run
+run: ## Run the local container
+	podman run -it --rm --net=host localhost/homepage-container:latest

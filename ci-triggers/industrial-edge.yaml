@@ -8,7 +8,6 @@ triggers:
   - name: main
     versions:
     - '4.12'
-    - '4.11'
   - name: 'v2.2'
     versions:
     - '4.10'

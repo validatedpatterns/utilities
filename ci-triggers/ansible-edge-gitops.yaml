@@ -8,9 +8,9 @@ triggers:
   - name: main
     versions:
     - '4.12'
-    - '4.11'
-  - name: 'v1.1'
+  - name: 'v1.2'
     versions:
+    - '4.12'
     - '4.11'
     - '4.10'
 
@@ -20,12 +20,12 @@ triggers:
     platforms:
       - aws
   - version: '4.11'
-    branch: main
+    branch: 'v1.2'
     platforms:
       - aws
     buildType: stable
   - version: '4.10'
-    branch: 'v1.1'
+    branch: 'v1.2'
     platforms:
       - aws
     buildType: stable

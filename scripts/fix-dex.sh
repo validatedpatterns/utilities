@@ -11,11 +11,11 @@ function log {
 }
 
 log -n "Retirevng namespaces for OpenShift GitOps DEX pods ... "
-DEXNAMESPACES=$(oc get pods -A | grep -i dex | awk '{print $1}')
+DEXNAMESPACES=$(oc get pods -A | grep -i 'dex-server' | awk '{print $1}')
 log "Retirevng namespaces for OpenShift GitOps DEX pods ... ok"
 
 for namespace in $DEXNAMESPACES; do
-  DEXPOD=$(oc get pods -n $namespace | grep dex | awk '{ print $1 }')
+  DEXPOD=$(oc get pods -n $namespace | grep 'dex-server' | awk '{ print $1 }')
   log -n "Deleting pod [ $DEXPOD ] in namespace [ $namespace ] ... "
   RC=$(oc delete -n $namespace pod/$DEXPOD;echo $? > /tmp/rc)
   if [ $(cat /tmp/rc) -eq 0 ]; then

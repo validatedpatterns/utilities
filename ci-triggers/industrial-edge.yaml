@@ -16,6 +16,9 @@ triggers:
   - name: 'v2.3'
     versions:
     - '4.11'
+    - '4.10'
+    - '4.9'
+    - '4.8'
 
 
   openshift:
@@ -29,17 +32,17 @@ triggers:
       - gcp
     buildType: stable
   - version: '4.10'
-    branch: 'v2.2'
+    branch: 'v2.3'
     platforms:
       - azure
     buildType: stable
   - version: '4.9'
-    branch: 'v2.2'
+    branch: 'v2.3'
     platforms:
       - aws
     buildType: stable
   - version: '4.8'
-    branch: 'v2.2'
+    branch: 'v2.3'
     platforms:
       - gcp
     buildType: stable

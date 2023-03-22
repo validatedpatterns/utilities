@@ -16,28 +16,14 @@ triggers:
     branch: main
     platforms:
       - aws
-  - version: '4.12'
-    branch: main
-    platforms:
       - azure
-    buildType: stable
-  - version: '4.12'
-    branch: main
-    platforms:
       - gcp
     buildType: stable
   - version: '4.11'
     branch: main
     platforms:
       - aws
-  - version: '4.11'
-    branch: main
-    platforms:
       - azure
-    buildType: stable
-  - version: '4.11'
-    branch: main
-    platforms:
       - gcp
     buildType: stable
 

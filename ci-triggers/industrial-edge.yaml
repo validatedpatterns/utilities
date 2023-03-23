@@ -13,7 +13,6 @@ triggers:
     - '4.11'
     - '4.10'
     - '4.9'
-    - '4.8'
 
   openshift:
   - version: '4.12'
@@ -34,11 +33,6 @@ triggers:
     branch: 'v2.3'
     platforms:
       - aws
-    buildType: stable
-  - version: '4.8'
-    branch: 'v2.3'
-    platforms:
-      - gcp
     buildType: stable
 
   subscriptions:

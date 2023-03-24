@@ -13,7 +13,6 @@ triggers:
   - name: 'v1.0'
     versions:
     - '4.9'
-    - '4.8'
 
   openshift:
   - version: '4.12'
@@ -34,11 +33,6 @@ triggers:
     branch: 'v1.0'
     platforms:
       - aws
-    buildType: stable
-  - version: '4.8'
-    branch: 'v1.0'
-    platforms:
-      - gcp
     buildType: stable
 
   subscriptions:

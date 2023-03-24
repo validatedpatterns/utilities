@@ -10,9 +10,6 @@ triggers:
     - '4.12'
     - '4.11'
     - '4.10'
-  - name: 'v1.0'
-    versions:
-    - '4.9'
 
   openshift:
   - version: '4.12'
@@ -28,11 +25,6 @@ triggers:
     branch: main
     platforms:
       - azure
-    buildType: stable
-  - version: '4.9'
-    branch: 'v1.0'
-    platforms:
-      - aws
     buildType: stable
 
   subscriptions:

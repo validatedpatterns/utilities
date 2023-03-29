@@ -88,7 +88,7 @@ class ValidatedPattern:
         for namespace in namespaceList:
             validated = instance.validate(namespace)
             list.append ( (namespace, str(validated)) )
-            #print ("Namespace [" + namespace + "] exists " + str(validated))
+            print ("Namespace [" + namespace + "] exists " + str(validated))
         return list
                           
     def validateOperators(self):

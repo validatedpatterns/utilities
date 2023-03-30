@@ -85,7 +85,11 @@ def displayRoutes():
         messages.append(("No routes found in namespace", filter.value))
     else:
         for item in routesList:
-            messages.append((item.metadata.name,item.spec.host))
+            if 'host' in item.spec:
+              messages.append((item.metadata.name,item.spec.host))
+            else:
+              messages.append((item.metadata.name,item.status.ingress[0].host))
+              
         t2 = F.add(npyscreen.GridColTitles,
              name="OpenShift Routes Found in [" + filter.value + "]",
              col_width=10,

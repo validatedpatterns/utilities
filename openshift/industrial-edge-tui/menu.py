@@ -171,30 +171,36 @@ def validateDataCenterNameSpaces():
     filter = form.add(npyscreen.TitleText, name = "Enter file name (e.g. /home/claudiol/values-datacenter.yaml) values file to validate: ")
     # Go ahead and get user input
     form.edit()
-    # Create a Namespace instance and pass the filter value.
-    if filter.value:
-        instance = vp.ValidatedPattern(filter.value)
-        instance.loadPatternValues()
-        # Get the list from OpenShift 
-        validated_list=instance.validateNameSpaces()
 
-    # Create a Form to display results
-    F = npyscreen.Form(name = "Validated Patterns Datacenter Namespace Validation",)
-    messages = []
+    try:
+      # Create a Namespace instance and pass the filter value.
+      if filter.value:
+          instance = vp.ValidatedPattern(filter.value)
+          instance.loadPatternValues()
+          # Get the list from OpenShift 
+          validated_list=instance.validateNameSpaces()
+       
+      # Create a Form to display results
+      F = npyscreen.Form(name = "Validated Patterns Datacenter Namespace Validation",)
+      messages = []
 
-    if len(validated_list) == 0:
-        messages.append(("No namespaces found to validate in file: ", filter.value))
-    else:
-        for item in validated_list:
-            messages.append((item[0],item[1]))
-    t2 = F.add(npyscreen.GridColTitles,
-               name="OpenShift Namespacess Validated in [" + filter.value + "]",
-               #col_width=60,
-               values=messages,
-               col_titles=['Namespace', 'Validated Status'])         
-    t2.values = messages  
-    F.edit()
+      if len(validated_list) == 0:
+          messages.append(("No namespaces found to validate in file: ", filter.value))
+      else:
+          for item in validated_list:
+              messages.append((item[0],item[1]))
+      t2 = F.add(npyscreen.GridColTitles,
+                 name="OpenShift Namespacess Validated in [" + filter.value + "]",
+                 #col_width=60,
+                 values=messages,
+                 col_titles=['Namespace', 'Validated Status'])         
+      t2.values = messages  
+      F.edit()
 
+    except:
+        message_to_display = 'Exception occured! Does the file exists?'
+        npyscreen.notify(message_to_display, title='Exception in Validate Namespaces')
+        time.sleep(3) 
 #
 # validateOperators - validate OpenShift Operators listed in values-datacenter.yaml file
 # 

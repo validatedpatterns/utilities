@@ -93,7 +93,7 @@ class ValidatedPattern:
         for namespace in namespaceList:
             validated = instance.validate(namespace)
             list.append ( (namespace, str(validated)) )
-            print ("Namespace [" + namespace + "] exists " + str(validated))
+            #print ("Namespace [" + namespace + "] exists " + str(validated))
         return list
                           
     def validateOperators(self):
@@ -102,11 +102,9 @@ class ValidatedPattern:
         #operator_list = operator_instance.getList()
         #print (operator_list)
         operator_list = self.getSiteSubscriptions()
-        print (operator_list)
-        if type(operator_list) is dict:
-          for key, value in operator_list.items():
-            operatorName = value['name'] 
-            namespace = (value['namespace'] if 'namespace' in value else "none" )
+        for operator in operator_list:
+            operatorName = operator['name'] 
+            namespace = (operator['namespace'] if 'namespace' in operator else "none" )
             validated, namespace = operator_instance.validate(operatorName, namespace)
             list.append((operatorName, namespace, validated))
             #print ("Operator[" + operatorName + "] exists in namespace [" + namespace + "] ===>" + str(validated))

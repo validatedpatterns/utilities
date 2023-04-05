@@ -16,6 +16,7 @@ triggers:
     branch: main
     platforms:
       - aws
+    buildType: stable
   - version: '4.11'
     branch: main
     platforms:

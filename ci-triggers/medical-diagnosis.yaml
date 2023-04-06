@@ -18,6 +18,7 @@ triggers:
     branch: main
     platforms:
       - azure
+    buildType: stable
   - version: '4.11'
     buildType: stable
     branch: 'stable-4.11-v2.3'

@@ -218,6 +218,7 @@ def validateDataCenterOperators():
         instance.loadPatternValues()
         # Get the list from OpenShift 
         validated_list=instance.validateOperators()
+        print (validated_list)
 
     # Create a Form to display results
     F = npyscreen.Form(name = "Validated Patterns Datacenter Installed Operator Validation",)

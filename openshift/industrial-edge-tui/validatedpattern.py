@@ -102,7 +102,7 @@ class ValidatedPattern:
         #operator_list = operator_instance.getList()
         #print (operator_list)
         operator_list = self.getSiteSubscriptions()
-        for operator in operator_list:
+        for key, operator in operator_list.items():
             operatorName = operator['name'] 
             namespace = (operator['namespace'] if 'namespace' in operator else "none" )
             validated, namespace = operator_instance.validate(operatorName, namespace)

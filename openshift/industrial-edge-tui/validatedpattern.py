@@ -102,7 +102,16 @@ class ValidatedPattern:
         #operator_list = operator_instance.getList()
         #print (operator_list)
         operator_list = self.getSiteSubscriptions()
-        for key, operator in operator_list.items():
+        if type(operator_list) is dict:
+          for key,value in operator_list.items():
+            operator=value
+            operatorName = operator['name'] 
+            namespace = (operator['namespace'] if 'namespace' in operator else "none" )
+            validated, namespace = operator_instance.validate(operatorName, namespace)
+            list.append((operatorName, namespace, validated))
+            #print ("Operator[" + operatorName + "] exists in namespace [" + namespace + "] ===>" + str(validated))
+        elif type(operator_list) is list:
+          for operator in operator_list:
             operatorName = operator['name'] 
             namespace = (operator['namespace'] if 'namespace' in operator else "none" )
             validated, namespace = operator_instance.validate(operatorName, namespace)

@@ -96,7 +96,7 @@ class Operators:
       for subscription in subscription_list:
           if namespace == 'none':
             if ( subscription[0] == name  ):
-              return True, namespace
+              return True, subscription[1]
           elif ( (subscription[0] == name) and (subscription[1] == namespace) ):
               return True, namespace
-      return False, namespace
+      return False, subscription[1]

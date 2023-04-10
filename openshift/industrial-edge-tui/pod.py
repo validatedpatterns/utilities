@@ -29,7 +29,7 @@ class Pods:
         self.api_version = 'v1'
         self.kind        = 'Pod'
         self.k8s_client = config.new_client_from_config()
-        self.dynamic_client = dynamic.DynamicClient(
+        self.dyn_client = dynamic.DynamicClient(
             api_client.ApiClient(configuration=config.
                                  load_kube_config(KUBE_CONFIG)))
         self.filter = filter

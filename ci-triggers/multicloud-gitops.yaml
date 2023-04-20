@@ -30,3 +30,4 @@ triggers:
 
   subscriptions:
   - openshift-gitops: main
+  - rhacm: main

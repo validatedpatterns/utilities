@@ -32,4 +32,5 @@ triggers:
     buildType: stable
 
   subscriptions:
-  - openshift-gitops: main
+  - name: openshift-gitops
+    branch: main

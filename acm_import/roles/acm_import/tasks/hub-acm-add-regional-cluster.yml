@@ -1,5 +1,5 @@
 - name: "Verify valid cluster name"
-  assert:
+  ansible.builtin.assert:
     that: region_cluster_name is regex('^[a-z0-9]([-a-z0-9]*[a-z0-9])?$')
     fail_msg: "region_cluster_name failed regex validation"
     success_msg: "{{ region_cluster_name }} is valid"
@@ -13,10 +13,12 @@
   register: ocm_mc_obj
 
 - name: "Set fact if regional cluster is registered"
-  set_fact:
+  ansible.builtin.set_fact:
     ocm_mc_registered: "{{ ocm_mc_obj.resources | length == 1 }}"
 
 - name: Register Managed Cluster
+  when:
+    - not ocm_mc_registered
   block:
     - name: "Create regional ManagedCluster"
       kubernetes.core.k8s:
@@ -35,34 +37,39 @@
         state: present
         kubeconfig: "{{ HUBCONFIG }}"
         template: klusterletaddonconfig.yml.j2
-  when:
-    - not ocm_mc_registered
 
 - name: "Pull ManagedClusterJoined Status"
-  set_fact:
-    ocm_mc_status: "{{ lookup('kubernetes.core.k8s', kubeconfig=HUBCONFIG, api_version='cluster.open-cluster-management.io/v1', kind='ManagedCluster', resource_name=region_cluster_name) | json_query(query) }}"
+  ansible.builtin.set_fact:
+    ocm_mc_status: >
+      "{{ lookup('kubernetes.core.k8s', kubeconfig=HUBCONFIG, api_version='cluster.open-cluster-management.io/v1',
+      kind='ManagedCluster', resource_name=region_cluster_name) | json_query(query) }}"
   vars:
     query: "status.conditions[?type == 'ManagedClusterJoined'].status"
 
 - name: "Determine if Managed Cluster has Joined"
-  set_fact:
+  ansible.builtin.set_fact:
     ocm_mc_reported: "{{ ocm_mc_status | length == 1 and ocm_mc_status[0] == 'True' }}"
 
 - name: Attach Managed Cluster
+  when: not ocm_mc_reported
   block:
     - name: "[HUB] Derive import name"
-      set_fact:
+      ansible.builtin.set_fact:
         cluster_import: "{{ region_cluster_name }}-import"
 
     - name: "[HUB] Get CRDs from Hub for the new ManagedCluster"
-      set_fact:
-        import_crds: "{{ lookup('k8s', kubeconfig=HUBCONFIG, api_version='v1', kind='Secret', namespace=region_cluster_name, resource_name=cluster_import) | json_query(query) }}"
+      ansible.builtin.set_fact:
+        import_crds: >
+          "{{ lookup('k8s', kubeconfig=HUBCONFIG, api_version='v1', kind='Secret', namespace=region_cluster_name,
+          resource_name=cluster_import) | json_query(query) }}"
       vars:
         query: "data.\"crds.yaml\""
 
     - name: "[HUB] Get ROs from Hub for the new ManagedCluster"
-      set_fact:
-        import_ros: "{{ lookup('k8s', kubeconfig=HUBCONFIG, api_version='v1', kind='Secret', namespace=region_cluster_name, resource_name=cluster_import) | json_query(query) }}"
+      ansible.builtin.set_fact:
+        import_ros: >
+          "{{ lookup('k8s', kubeconfig=HUBCONFIG, api_version='v1', kind='Secret', namespace=region_cluster_name,
+          resource_name=cluster_import) | json_query(query) }}"
       vars:
         query: "data.\"import.yaml\""
 
@@ -77,4 +84,3 @@
         state: present
         kubeconfig: "{{ REGIONCONFIG }}"
         definition: "{{ import_ros | b64decode }}"
-  when: not ocm_mc_reported

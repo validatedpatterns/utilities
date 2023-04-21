@@ -1,10 +1,10 @@
 - name: Fetch regional cluster info
-  include_tasks:
+  ansible.builtin.include_tasks:
     file: region-fetch-api.yml
     apply:
       environment:
         KUBECONFIG: "{{ REGIONCONFIG }}"
 
 - name: Add the regional cluster to the ACM hub
-  include_tasks:
+  ansible.builtin.include_tasks:
     file: hub-acm-add-regional-cluster.yml

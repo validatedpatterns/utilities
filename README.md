@@ -1,6 +1,6 @@
 # utilities repository
 
-This repo includes a set of (hopefully) utilities that can be used to query namespaces,
+This repository includes a set of (hopefully) utilities that can be used to query namespaces,
 operators, argocd projects and argocd applications in an OpenShift cluster.
 
 This is still work in progress so we will be re-arranging a lot of the code in the near future.
@@ -9,7 +9,7 @@ This is still work in progress so we will be re-arranging a lot of the code in t
 
 The openshift directory contains a classes that can be used in an OpenShift cluster environment.
 The class library uses the [OpenShift Rest CLI](https://github.com/openshift/openshift-restclient-python)
-to make the proper calls to the OpenShift api.
+to make the proper calls to the OpenShift API.
 
 To install you can follow the Installation instructions found in the README.
 
@@ -23,6 +23,6 @@ the package on your system using DNF, apt-get or pip.
 | aws-tools | This directory contains some S3 tools and EC2  tools |
 | openshift | This directory contains the helper classes for openshift |
 | acm_import | Playbook and role to automatically import clusters in ACM |
-| jekyll-container | Takes text written in your favorite markup language and uses layouts to create a static website. |
+| jekyll-container | Takes text written in your favorite markup language and uses layouts to create a static site. |
 
 If you have any questions please contact [Lester Claudio](claudiol@redhat.com) or [Jonny Rickard](jrickard@redaht.com)

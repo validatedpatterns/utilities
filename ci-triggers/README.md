@@ -1,4 +1,4 @@
-# Token Generation to bridge UMB with GitHub WebHooks for automated CI-Triggers.
+# Token Generation to bridge UMB with GitHub WebHooks for automated CI-Triggers
 
 *To generate the token you must be logged on to Red Hat VPN*
 
@@ -7,7 +7,7 @@
 ### Token Generation
 
 1. browse to: https://one.redhat.com/token-manager/#/umb-bridge
-1. enter URL of repo (ex: https://github.com/hybrid-cloud-patterns/multicloud-gitops)
+1. enter URL of repository (ex: https://github.com/hybrid-cloud-patterns/multicloud-gitops)
 1. Click generate token
 1. copy generated token
 1. Next open browser to github.com

@@ -3,26 +3,26 @@
   hosts: localhost
   connection: local
   pre_tasks:
-  - name: Set HUBCONFIG and REGIONCONFIG facts from env variables
-    set_fact:
-      HUBCONFIG: "{{ lookup('env', 'HUBCONFIG') }}"
-      REGIONCONFIG: "{{ lookup('env', 'REGIONCONFIG') }}"
+    - name: Set HUBCONFIG and REGIONCONFIG facts from env variables
+      ansible.builtin.set_fact:
+        HUBCONFIG: "{{ lookup('env', 'HUBCONFIG') }}"
+        REGIONCONFIG: "{{ lookup('env', 'REGIONCONFIG') }}"
 
-  - name: Check for correct HUBCONFIG env variable
-    fail:
-      msg: "HUBCONFIG env variable needs to be set and pointing to the HUB kubeconfig file"
-    when:
-      HUBCONFIG is not defined or HUBCONFIG | length == 0
+    - name: Check for correct HUBCONFIG env variable
+      ansible.builtin.fail:
+        msg: "HUBCONFIG env variable needs to be set and pointing to the HUB kubeconfig file"
+      when:
+        HUBCONFIG is not defined or HUBCONFIG | length == 0
 
-  - name: Check for correct REGIONCONFIG env variable
-    fail:
-      msg: "REGIONCONFIG env variable needs to be set and pointing to the REGION kubeconfig file"
-    when:
-      REGIONCONFIG is not defined or REGIONCONFIG | length == 0
+    - name: Check for correct REGIONCONFIG env variable
+      ansible.builtin.fail:
+        msg: "REGIONCONFIG env variable needs to be set and pointing to the REGION kubeconfig file"
+      when:
+        REGIONCONFIG is not defined or REGIONCONFIG | length == 0
 
-  - name: Print the hub and regional kubeconfigs
-    debug:
-      msg: "HUBCONFIG: {{ HUBCONFIG }} - REGIONCONFIG: {{ REGIONCONFIG }}"
+    - name: Print the hub and regional kubeconfigs
+      ansible.builtin.debug:
+        msg: "HUBCONFIG: {{ HUBCONFIG }} - REGIONCONFIG: {{ REGIONCONFIG }}"
 
   roles:
     - acm_import

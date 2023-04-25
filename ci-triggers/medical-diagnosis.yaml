@@ -36,5 +36,5 @@ triggers:
         - azure
 
   subscriptions:
-  - name: openshift-gitops
+  - name: gitops
     branch: main

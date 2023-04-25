@@ -31,7 +31,7 @@ triggers:
     buildType: stable
 
   subscriptions:
-  - name: openshift-gitops
+  - name: gitops
     branch: main
   - name: rhacm
     branch: main

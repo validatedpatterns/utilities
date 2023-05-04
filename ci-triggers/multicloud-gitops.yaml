@@ -7,11 +7,17 @@ triggers:
   branches:
   - name: main
     versions:
+    - '4.13'
     - '4.12'
     - '4.11'
     - '4.10'
 
   openshift:
+  - version: '4.13'
+    branch: main
+    platforms:
+      - gcp
+    buildType: nightly
   - version: '4.12'
     branch: main
     platforms:

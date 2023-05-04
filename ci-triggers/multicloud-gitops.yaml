@@ -17,7 +17,7 @@ triggers:
     branch: main
     platforms:
       - gcp
-    buildType: nightly
+    buildType: stable
   - version: '4.12'
     branch: main
     platforms:

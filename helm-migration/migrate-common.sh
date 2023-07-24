@@ -1,5 +1,5 @@
 #!/bin/bash
-set -ex -o pipefail
+set -e -o pipefail
 
 CHARTS="clustergroup acm hashicorp-vault golang-external-secrets"
 COMMON="https://github.com/hybrid-cloud-patterns/common/"
@@ -14,7 +14,7 @@ function usage {
   echo "Usage:"
   echo "    -h|--help                   - Optional. Prints this help page"
   echo "    -d|--destinationdir <dir>   - Mandatory. In which folder to create the helm chart git repos. Must not exist"
-  echo "    -t|--templatedir <dir>      - Optional. When specified it copies all the workflows contained in ./workflow-templates/helm/"
+  echo "    -t|--templatedir <dir>      - Optional. When specified it copies all the workflows contained in .github/workflow/"
 }
 
 if ! getopt -o hd:t: -l help,destinationdir:,templatedir:; then
@@ -71,7 +71,7 @@ for i in ${CHARTS}; do
     if [ -n "${TEMPLATE_DIR}" ]; then
         echo "Copying templates..."
         mkdir -p .github/workflows
-        cp -avf "${TEMPLATE_DIR}/workflow-templates/helm/*" .github/workflows
+        cp -avf "${TEMPLATE_DIR}/.github/workflows/*" .github/workflows
         git add .github/workflows
         git commit -a -m "Added .github/workflows for helm chart"
     fi

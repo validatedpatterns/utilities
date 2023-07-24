@@ -100,8 +100,8 @@ for i in $(ls -d *); do
     git branch -M main
     git push -f -u origin main
     CHARTVERSION=$(yq -r '.version' Chart.yaml)
-    git tag "v${CHARTVERSION}"
-    git push origin "v${CHARTVERSION}"
+    git tag -f "v${CHARTVERSION}"
+    git push origin -f "v${CHARTVERSION}"
     popd
 done
 popd # dest_dir

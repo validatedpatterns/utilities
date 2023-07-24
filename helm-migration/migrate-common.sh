@@ -98,7 +98,10 @@ for i in $(ls -d *); do
     pushd "${i}"
     git remote add origin "${GITBASE_URL}/${i}.git"
     git branch -M main
-    git push -u origin main
+    git push -f -u origin main
+    CHARTVERSION=$(yq -r '.version' Chart.yaml)
+    git tag "v${CHARTVERSION}"
+    git push origin "v${CHARTVERSION}"
     popd
 done
 popd # dest_dir

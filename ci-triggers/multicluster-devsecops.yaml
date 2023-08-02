@@ -34,3 +34,15 @@ triggers:
     branch: main
   - name: rhacm
     branch: main
+  - name: multicluster_engine
+    branch: main
+  - name: odf
+    branch: main
+  - name: rhacs
+    branch: main
+  - name: quay
+    branch: main
+  - name: quay-bridge
+    branch: main
+  - name: pipelines
+    branch: main

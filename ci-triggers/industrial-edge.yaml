@@ -37,7 +37,5 @@ triggers:
     buildType: stable
 
   subscriptions:
-  - name: gitops
-    branch: main
-  - name: rhacm
-    branch: main
+  - name: none
+    branch: none

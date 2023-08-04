@@ -40,7 +40,3 @@ triggers:
     branch: main
   - name: quay
     branch: main
-  - name: quay-bridge
-    branch: main
-  - name: pipelines
-    branch: main

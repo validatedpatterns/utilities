@@ -34,8 +34,6 @@ triggers:
     branch: main
   - name: rhacm
     branch: main
-  - name: multicluster_engine
-    branch: main
   - name: odf
     branch: main
   - name: rhacs

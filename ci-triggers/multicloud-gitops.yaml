@@ -7,12 +7,18 @@ triggers:
   branches:
   - name: main
     versions:
+    - '4.14'
     - '4.13'
     - '4.12'
     - '4.11'
     - '4.10'
 
   openshift:
+  - version: '4.14'
+    branch: main
+    platforms:
+      - aws
+    buildType: nightly
   - version: '4.13'
     branch: main
     platforms:

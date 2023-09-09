@@ -63,6 +63,7 @@ def main():
 
         masterFilter=filter + "-*master*"
         workerFilter=filter + "-*worker*"
+        hostedClusterFilter= "*" + filter + "*"
         # Find the instances that are part of our clusters
         # The instances tag are tagged as 'master' and 'worker'
         # so we filter on that.
@@ -73,6 +74,7 @@ def main():
                     'Values': [
                         masterFilter,
                         workerFilter,
+                        hostedClusterFilter,
                     ],
                 },
             ],
@@ -97,7 +99,7 @@ def main():
     # Check to see if we found matching instances
     if fFoundInstances == False:
         strregions=','.join([str(region) for region in regions])
-        print('No instances found in regions [' + strregions + '] that match filter [' + masterFilter + " and " + workerFilter + ']')
+        print('No instances found in regions [' + strregions + '] that match filter [' + masterFilter + " and " + workerFilter + " or " + hostedClusterFilter + ']')
 
 if __name__ == "__main__":
     main()

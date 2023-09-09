@@ -63,6 +63,8 @@ def main():
 
         masterFilter=filter + "-*master*"
         workerFilter=filter + "-*worker*"
+        hostedClusterFilter= "*" + filter + "*"
+
         # Find the instances that are part of our clusters
         # The instances tag are tagged as 'master' and 'worker'
         # so we filter on that.
@@ -73,6 +75,7 @@ def main():
                     'Values': [
                         masterFilter,
                         workerFilter,
+                        hostedClusterFilter,
                     ],
                 },
             ],
@@ -100,12 +103,12 @@ def main():
             ec2.stop_instances(InstanceIds=value)
             print('In Region [' + key + '] stopped your instances: ' + str(value))
         else:
-            print('No instances to stop in region: ' + key + " that match filter [" + masterFilter + " and " + workerFilter + "]")
+            print('No instances to stop in region: ' + key + " that match filter [" + masterFilter + " and " + workerFilter + " or " + hostedClusterFilter + "]")
 
     # Check to see if we found matching instances
     if fMatchedInstances == False:
         strregions=','.join([str(region) for region in regions])
-        print('No instances found in regions [' + strregions + '] that match filter [' + masterFilter + " and " + workerFilter + ']')
+        print('No instances found in regions [' + strregions + '] that match filter [' + masterFilter + " and " + workerFilter + " or " + hostedClusterFilter + ']')
 
 if __name__ == "__main__":
     main()

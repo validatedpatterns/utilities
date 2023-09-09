@@ -13,6 +13,7 @@ import namespace as ns
 import pod as nspod
 import validatedpattern as vp
 import pipelines as pipe
+import routes as myroutes
 
 from cursesmenu import CursesMenu
 import npyscreen
@@ -57,6 +58,45 @@ def validatePods():
 #
 # displayPods - displays Pods in a specified OpenShift Namespaces
 # 
+
+def displayRoutes():
+    # Create a Form
+    form = npyscreen.Form(name = "OpenShift Route Search",)
+    # Add a entry widget
+    filter = form.add(npyscreen.TitleText, name = "Enter namespace to search [ALL for all namespaces]: ")
+    # Go ahead and get user input
+    form.edit()
+    # Create a Namespace instance and pass the filter value.
+    #print (filter.value)
+    if not filter.value:
+        instance = myroutes.Routes("ALL")
+        # Get the list from OpenShift 
+        routesList=instance.getRouteList(filter.value)
+    else:
+        instance = myroutes.Routes(filter.value)
+        # Get the list from OpenShift 
+        routesList=instance.getRouteList(filter.value)
+
+    # Create a Form to display results
+    F = npyscreen.Form(name = "Validated Patterns Routes in Namespace [" + filter.value + "]",)
+    messages = []
+
+    if len(routesList) == 0:
+        messages.append(("No routes found in namespace", filter.value))
+    else:
+        for item in routesList:
+            if 'host' in item.spec:
+              messages.append((item.metadata.name,item.spec.host))
+            else:
+              messages.append((item.metadata.name,item.status.ingress[0].host))
+              
+        t2 = F.add(npyscreen.GridColTitles,
+             name="OpenShift Routes Found in [" + filter.value + "]",
+             col_width=10,
+             values=messages,
+             col_titles=['Route Name', 'Route'])         
+    #t2.values = messages  
+    F.edit()
 
 def displayPods():
     # Create a Form
@@ -131,30 +171,36 @@ def validateDataCenterNameSpaces():
     filter = form.add(npyscreen.TitleText, name = "Enter file name (e.g. /home/claudiol/values-datacenter.yaml) values file to validate: ")
     # Go ahead and get user input
     form.edit()
-    # Create a Namespace instance and pass the filter value.
-    if filter.value:
-        instance = vp.ValidatedPattern(filter.value)
-        instance.loadPatternValues()
-        # Get the list from OpenShift 
-        validated_list=instance.validateNameSpaces()
 
-    # Create a Form to display results
-    F = npyscreen.Form(name = "Validated Patterns Datacenter Namespace Validation",)
-    messages = []
+    try:
+      # Create a Namespace instance and pass the filter value.
+      if filter.value:
+          instance = vp.ValidatedPattern(filter.value)
+          instance.loadPatternValues()
+          # Get the list from OpenShift 
+          validated_list=instance.validateNameSpaces()
+       
+      # Create a Form to display results
+      F = npyscreen.Form(name = "Validated Patterns Datacenter Namespace Validation",)
+      messages = []
 
-    if len(validated_list) == 0:
-        messages.append(("No namespaces found to validate in file: ", filter.value))
-    else:
-        for item in validated_list:
-            messages.append((item[0],item[1]))
-    t2 = F.add(npyscreen.GridColTitles,
-               name="OpenShift Namespacess Validated in [" + filter.value + "]",
-               #col_width=60,
-               values=messages,
-               col_titles=['Namespace', 'Validated Status'])         
-    t2.values = messages  
-    F.edit()
+      if len(validated_list) == 0:
+          messages.append(("No namespaces found to validate in file: ", filter.value))
+      else:
+          for item in validated_list:
+              messages.append((item[0],item[1]))
+      t2 = F.add(npyscreen.GridColTitles,
+                 name="OpenShift Namespacess Validated in [" + filter.value + "]",
+                 #col_width=60,
+                 values=messages,
+                 col_titles=['Namespace', 'Validated Status'])         
+      t2.values = messages  
+      F.edit()
 
+    except:
+        message_to_display = 'Exception occured! Does the file exists?'
+        npyscreen.notify(message_to_display, title='Exception in Validate Namespaces')
+        time.sleep(3) 
 #
 # validateOperators - validate OpenShift Operators listed in values-datacenter.yaml file
 # 
@@ -172,6 +218,7 @@ def validateDataCenterOperators():
         instance.loadPatternValues()
         # Get the list from OpenShift 
         validated_list=instance.validateOperators()
+        #print (validated_list)
 
     # Create a Form to display results
     F = npyscreen.Form(name = "Validated Patterns Datacenter Installed Operator Validation",)
@@ -255,7 +302,11 @@ def main():
                     'type' : 'dc-pipelines'
                     }
 
-        menu['options'] = [option_1, option_2, option_3, option_4, option_5]
+        option_6 = {'title' : 'Validate Datacenter Routes',
+                    'type' : 'dc-routes'
+                    }
+
+        menu['options'] = [option_1, option_2, option_3, option_4, option_5, option_6]
 
         m = CursesMenu(menu)
         
@@ -274,6 +325,8 @@ def main():
                 validateDataCenterOperators()
             elif selected_action['type'] == 'dc-pipelines':
                 displayPipelines()
+            elif selected_action['type'] == 'dc-routes':
+                displayRoutes()
     except Exception as err:
         if "KUBECONFIG" in str(err):
             print ("KUBECONFIG environment variable not set. Please export KUBECONFIG=[kubeconfig file]")

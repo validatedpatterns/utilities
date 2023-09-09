@@ -7,17 +7,24 @@ triggers:
   branches:
   - name: main
     versions:
-    - '4.12'
+    - '4.13'
   - name: 'v2.3'
     versions:
+    - '4.12'
     - '4.11'
     - '4.10'
 
   openshift:
-  - version: '4.12'
+  - version: '4.13'
     branch: main
     platforms:
+      - azure
+    buildType: stable
+  - version: '4.12'
+    branch: 'v2.3'
+    platforms:
       - aws
+    buildType: stable
   - version: '4.11'
     branch: 'v2.3'
     platforms:
@@ -30,4 +37,5 @@ triggers:
     buildType: stable
 
   subscriptions:
-  - openshift-gitops: main
+  - name: none
+    branch: none

@@ -84,7 +84,7 @@ class Operators:
         subscription_list = v1_subscriptions.get()
         #print(subscription_list)
         for subscription in subscription_list.items:
-            print(subscription.metadata)
+            #print(subscription.metadata)
             if self.filter == "ALL":
                 list.append((subscription.metadata.name, subscription.metadata.namespace))
             elif self.filter in subscription.metadata.name:
@@ -99,4 +99,4 @@ class Operators:
               return True, subscription[1]
           elif ( (subscription[0] == name) and (subscription[1] == namespace) ):
               return True, namespace
-      return False, namespace
+      return False, subscription[1]

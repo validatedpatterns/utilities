@@ -1,11 +1,15 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from kubernetes import client, config
+from kubernetes import client, config, dynamic
 from openshift.dynamic import DynamicClient
+from kubernetes.client import api_client
 
 # Python imports
 import sys
+import os
+
+KUBE_CONFIG = os.getenv('KUBE_CONFIG_RHEV')
 
 class Pods:
     """
@@ -25,9 +29,12 @@ class Pods:
         self.api_version = 'v1'
         self.kind        = 'Pod'
         self.k8s_client = config.new_client_from_config()
-        self.dyn_client = DynamicClient(self.k8s_client)
+        self.dyn_client = dynamic.DynamicClient(
+            api_client.ApiClient(configuration=config.
+                                 load_kube_config(KUBE_CONFIG)))
         self.filter = filter
         
+
     def printListAllNamespaces(self):
         print ("Running Pods:")
         v1_pods = self.dyn_client.resources.get(api_version=self.api_version, kind=self.kind)
@@ -63,4 +70,10 @@ class Pods:
                 #print(pod.metadata.name+ " Namespace: " + pod.metadata.namespace)
                 ret_list.append(pod)
         return ret_list
+
+    def getPodLogs(self, podname, namespace):
+        api = client.CoreV1Api()
+        api_response = api.read_namespaced_pod_log(
+                    name=podname, namespace=namespace)
+        return api_response
         

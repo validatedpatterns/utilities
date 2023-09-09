@@ -56,18 +56,18 @@ def main():
 
     for operator in list:
         print (operator[0], operator[1], operator[2]) 
-
-    for operator in list:
-      operatorName = operator[0]
-      namespace = operator[1]
-      if namespace == "none":
-        pattern.deleteOperator(operatorName)
-      else:
-        pattern.deleteOperator(operatorName, namespace)
-
-    nslist = pattern.getSiteNameSpaces()
-    for namespace in nslist:
-        pattern.deleteNamespace(namespace)
+#
+#    for operator in list:
+#      operatorName = operator[0]
+#      namespace = operator[1]
+#      if namespace == "none":
+#        pattern.deleteOperator(operatorName)
+#      else:
+#        pattern.deleteOperator(operatorName, namespace)
+#
+#    nslist = pattern.getSiteNameSpaces()
+#    for namespace in nslist:
+#        pattern.deleteNamespace(namespace)
 
 if __name__ == "__main__":
     main()

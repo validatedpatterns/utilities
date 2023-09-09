@@ -3,13 +3,13 @@
   register: cluster_info
 
 - name: Set regional api fact
-  set_fact:
+  ansible.builtin.set_fact:
     region_api: "{{ cluster_info['connection']['host'] }}"
 
 # FIXME(bandini): This currently seems the sanest way to be sure of the cluster name being used as k8s has no concept
 # of own cluster name and other hacks like parsing the API url seem worse than this
 - name: Find regional cluster name
-  shell: |
+  ansible.builtin.shell: |
     {% raw %}
     oc config view --raw -o go-template="{{ range .clusters }}{{ if eq .cluster.server \"${API}\" }}{{ .name }}{{ end }}{{ end }}"
     {% endraw %}
@@ -19,13 +19,13 @@
     API: "{{ region_api }}"
 
 - name: Set regional cluster name fact
-  set_fact:
+  ansible.builtin.set_fact:
     region_cluster_name: "{{ region_cluster_oc.stdout }}"
   failed_when: region_cluster_oc.stdout | length == 0
 
 # This is strictly not needed but could be useful eventually
 - name: Find regional CA
-  shell: |
+  ansible.builtin.shell: |
     {% raw %}
     oc config view --raw -o go-template="{{ range .clusters }}{{ if eq .cluster.server \"${API}\" }}{{ index .cluster \"certificate-authority-data\" }}{{ end }}{{ end }}"
     {% endraw %}
@@ -35,6 +35,6 @@
     API: "{{ region_api }}"
 
 - name: Set regional CA fact
-  set_fact:
+  ansible.builtin.set_fact:
     region_ca: "{{ region_cluster_ca.stdout }}"
   failed_when: region_cluster_ca.stdout | length == 0

@@ -125,6 +125,7 @@ for i in "${GHREPOS[@]}"; do
   fi
 
   git push fork "${BRANCH}" -f | tee -a "$LOG"
+  gh repo set-default "${ORG}/${i}"
 
   # Automatically create a PR. This needs more testing and explaining before we enable it
   # The --head USERGITHUB:BRANCH is needed due to https://github.com/cli/cli/issues/2691

@@ -15,12 +15,10 @@ SUB_KEY_DURATION="5y"
 
 trap "rm -f vp" EXIT SIGINT
 
-cd $BASEDIR
 rm -rf "${KEYRING}"
 mkdir -p "${KEYRING}" "${TMPKEYRING}"
 chmod 0700 "${KEYRING}" "${TMPKEYRING}"
-
-export GNUPGHOME="${KEYRING}"
+cd $BASEDIR
 
 function create_key() {
     cat >vp <<EOF
@@ -73,10 +71,12 @@ function export_subkey() {
     gpg --output "${FILENAME}" --export-secret-subkeys ${KEY}
 }
 
+export GNUPGHOME="${KEYRING}"
 create_key
 create_subkey
 print_keys
 export_main_key vp-public.gpg
+export_privatekey vp-secret.gpg
 export_subkey vp-subkey-secret.gpg
 
 echo "Testing helm sign"
@@ -84,6 +84,7 @@ rm -rf ${CHART}*
 helm create "${CHART}"
 helm package "${CHART}"
 
+echo "Importing only public key and subkeys into new keyring"
 export GNUPGHOME="${TMPKEYRING}"
 cat vp-public.gpg | gpg --batch --import
 cat vp-subkey-secret.gpg | gpg --batch --import

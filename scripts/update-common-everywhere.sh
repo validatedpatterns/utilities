@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e -o pipefail
 
-ORG="hybrid-cloud-patterns"
+ORG="validatedpatterns"
 GITBASE="git@github.com:${ORG}"
 COMMON="https://github.com/${ORG}/common.git"
 BRANCH="common-automatic-update" # name of the branch being used locally and on the remote fork

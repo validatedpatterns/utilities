@@ -28,3 +28,39 @@ super-linter: ## Runs super linter locally
 ansible-lint: ## run ansible lint on ansible/ folder
 	podman run -it -v $(PWD):/workspace:rw,z --workdir /workspace \
 		--entrypoint "/usr/local/bin/ansible-lint" quay.io/ansible/creator-ee:latest  "-vvv" "acm_import/"
+
+##### HostedCluster Management tasks
+REGISTRY ?= quay.io/hybridcloudpatterns
+NAME ?= utility-container
+TAG ?= latest
+CONTAINER ?= $(NAME):$(TAG)
+
+.PHONY: cluster-status
+cluster-status: ## Checks the status of hostedcluster machines
+	@echo "Getting status of hosted-cluster nodes"
+	podman run --rm --net=host  \
+	  --security-opt label=disable \
+		-v ${HOME}:/pattern \
+		-v ${HOME}:${HOME} \
+		-v ${HOME}/.aws:/pattern-home/.aws \
+		"${REGISTRY}/${CONTAINER}"  python3 /usr/local/bin/status-instances.py -f ${CLUSTER}
+
+.PHONY: cluster-start
+cluster-start: ## Starts the ostedcluster machines
+	@echo "Starting hosted-cluster nodes"
+	podman run --rm --net=host  \
+	  --security-opt label=disable \
+		-v ${HOME}:/pattern \
+		-v ${HOME}:${HOME} \
+		-v ${HOME}/.aws:/pattern-home/.aws \
+	  "${REGISTRY}/${CONTAINER}" python3 /usr/local/bin/start-instances.py -f ${CLUSTER}
+
+.PHONY: cluster-stop
+cluster-stop: ## Checks the status of hostedcluster machines
+	@echo "Stopping hosted-cluster nodes"
+	podman run --rm --net=host  \
+	  --security-opt label=disable \
+		-v ${HOME}:/pattern \
+		-v ${HOME}:${HOME} \
+		-v ${HOME}/.aws:/pattern-home/.aws \
+		"${REGISTRY}/${CONTAINER}" python3 /usr/local/bin/stop-instances.py -f ${CLUSTER}

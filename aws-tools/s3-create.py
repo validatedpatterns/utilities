@@ -37,6 +37,9 @@ def usage():
         " -b or --bucket \n" \
         "    S3 bucket name to create \n" \
         "    Example: -b my-bucket \n" \
+        " -p or --public \n" \
+        "    Create s3 bucket with public access \n" \
+        "    Example: -p --public \n" \
         " -r or --region \n" \
         "    AWS region for bucket \n" \
         "    Example: -r us-west-1 \n" \
@@ -71,7 +74,7 @@ def getS3Client(region):
                           aws_access_key_id = aws_access_key_id,
                           aws_secret_access_key = aws_secret_access_key,
                           region_name = region,
-                          config=botocore.client.Config(signature_version = 's3'))
+                          config=botocore.client.Config(signature_version = 's3v4'))
         return s3
     except ClientError:
         print("Could not retrieve S3 client")
@@ -89,7 +92,7 @@ def getSNSClient(region):
                            aws_secret_access_key= aws_secret_access_key,
                            aws_session_token=sessionToken,
                            region_name=region,
-                           config=botocore.client.Config(signature_version = 's3'))
+                           config=botocore.client.Config(signature_version = 's3v4'))
         return sns
     except ClientError:
         print ("Could not retrieve SNS client")
@@ -106,10 +109,9 @@ def create_bucket(s3, bucket_name, region, public=None):
             "Version": "2012-10-17",
             "Statement": [
               {
-                "Sid": "AllowALLStatement1",
                 "Effect": "Allow",
                 "Principal": "*",
-                "Action": "s3:*",
+                "Action": "s3:GetObject",
                 "Resource": arn
               }
             ]
@@ -160,7 +162,7 @@ def create_bucket(s3, bucket_name, region, public=None):
           bucket_acl.put(AccessControlPolicy=mydict)
           return result
     except ClientError as e:
-        print("Could not create bucket [" + bucket_name + "]")
+        print(f"Could not create bucket {bucket_name}")
         print(e)
         raise
   

@@ -21,12 +21,12 @@ triggers:
   - version: '4.13'
     branch: main
     platforms:
-      - azure
+      - aws
     buildType: stable
   - version: '4.12'
     branch: main
     platforms:
-      - aws
+      - azure
     buildType: stable
   - version: '4.11'
     branch: main

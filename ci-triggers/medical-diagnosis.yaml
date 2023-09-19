@@ -11,7 +11,6 @@ triggers:
   - name: 'v2.5'
     versions:
     - '4.12'
-    - '4.10'
     - '4.11'
 
   openshift:
@@ -30,11 +29,6 @@ triggers:
     branch: 'v2.5'
     platforms:
       - aws
-  - version: '4.10'
-    branch: 'v2.5'
-    platforms:
-      - gcp
-    buildType: stable
 
   github:
     - version: '4.11'

@@ -36,5 +36,7 @@ triggers:
         - azure
 
   subscriptions:
-  - name: none
-    branch: none
+  - name: amq_streams
+    branch: main
+  - name: serverless
+    branch: main

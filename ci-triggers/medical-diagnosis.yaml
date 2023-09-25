@@ -40,3 +40,6 @@ triggers:
     branch: main
   - name: serverless
     branch: main
+  - name: odf
+    branch: main
+

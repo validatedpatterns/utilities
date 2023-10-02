@@ -1,0 +1,21 @@
+shortName: retail
+fullName: Retail
+webHookName: ''
+owners:
+  - bandini
+triggers:
+  branches:
+  - name: v1.0
+    versions:
+    - '4.11'
+
+  openshift:
+  - version: '4.11'
+    branch: v1.0
+    platforms:
+      - aws
+    buildType: stable
+
+  subscriptions:
+  - name: none
+    branch: none

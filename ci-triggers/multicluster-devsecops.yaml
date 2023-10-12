@@ -1,5 +1,6 @@
 shortName: devsecops
 fullName: MulticlusterDevSecOps
+repo: https://github.com/validatedpatterns/multicluster-devsecops
 webHookName: ''
 owners:
   - whenry

@@ -1,5 +1,6 @@
 shortName: manuela
 fullName: Manuela
+repo: https://github.com/validatedpatterns/industrial-edge
 webHookName: ''
 owners:
   - claudiol

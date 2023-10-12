@@ -1,5 +1,6 @@
 shortName: retail
 fullName: Retail
+repo: https://github.com/validatedpatterns/retail
 webHookName: ''
 owners:
   - bandini

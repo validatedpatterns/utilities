@@ -1,5 +1,6 @@
 shortName: mcgitops
 fullName: MultiCloudGitops
+repo: https://github.com/validatedpatterns/multicloud-gitops
 webHookName: ''
 owners:
   - bandini

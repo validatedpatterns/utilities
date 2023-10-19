@@ -32,5 +32,5 @@ triggers:
     buildType: stable
 
   subscriptions:
-  - name: none
-    branch: none
+  - name: gitops
+    branch: main

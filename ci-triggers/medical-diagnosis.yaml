@@ -37,10 +37,11 @@ triggers:
         - azure
 
   subscriptions:
+  - name: gitops
+    branch: main
   - name: amq_streams
     branch: main
   - name: serverless
     branch: main
   - name: odf
     branch: main
-

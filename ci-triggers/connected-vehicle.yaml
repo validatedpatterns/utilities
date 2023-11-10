@@ -1,0 +1,22 @@
+shortName: connvehicle
+fullName: Connected Vehicle
+repo: https://github.com/validatedpatterns/connected-vehicle-architecture
+webHookName: ''
+owners:
+  - bandini
+triggers:
+  branches:
+  - name: main
+    versions:
+    - '4.13'
+
+  openshift:
+  - version: '4.13'
+    branch: main
+    platforms:
+      - aws
+    buildType: stable
+
+  subscriptions:
+  - name: none
+    branch: none

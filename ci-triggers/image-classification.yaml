@@ -1,5 +1,5 @@
 shortName: imageclass
-fullName: Image Classification
+fullName: ImageClassification
 repo: https://github.com/validatedpatterns/image-classification
 webHookName: ''
 owners:

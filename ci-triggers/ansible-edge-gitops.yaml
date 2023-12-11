@@ -40,7 +40,7 @@ triggers:
   subscriptions:
   - name: gitops
     branch: main
-  - ansible_platform
+  - name: ansible_platform
     branch: main
   - name: odf
     branch: main

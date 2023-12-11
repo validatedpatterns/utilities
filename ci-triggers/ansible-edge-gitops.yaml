@@ -44,5 +44,5 @@ triggers:
     branch: main
   - name: odf
     branch: main
-  - name: hco
+  - name: cnv
     branch: main

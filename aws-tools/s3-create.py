@@ -71,7 +71,7 @@ def getS3Client(region):
                           aws_access_key_id = aws_access_key_id,
                           aws_secret_access_key = aws_secret_access_key,
                           region_name = region,
-                          config=botocore.client.Config(signature_version = 's3'))
+                          config=botocore.client.Config(signature_version = 's3v4'))
         return s3
     except ClientError:
         print("Could not retrieve S3 client")
@@ -97,8 +97,9 @@ def getSNSClient(region):
     
 def create_bucket(s3, bucket_name, region, public=None):
     try:
-        result = s3.create_bucket(Bucket=bucket_name, CreateBucketConfiguration={'LocationConstraint': region})
+        result = getS3Client(region).create_bucket(Bucket=bucket_name, CreateBucketConfiguration={'LocationConstraint': region})
         if public:
+          getS3Client(region).put_public_access_block(Bucket=bucket_name, PublicAccessBlockConfiguration={'BlockPublicAcls': False,'IgnorePublicAcls': False,'BlockPublicPolicy': False,'RestrictPublicBuckets': False})
           arn=[]
           arn.append("arn:aws:s3:::" + bucket_name)
           arn.append("arn:aws:s3:::" + bucket_name + "/*")
@@ -109,56 +110,14 @@ def create_bucket(s3, bucket_name, region, public=None):
                 "Sid": "AllowALLStatement1",
                 "Effect": "Allow",
                 "Principal": "*",
-                "Action": "s3:*",
+                "Action": [
+                    "s3:*",
+                    ],
                 "Resource": arn
               }
             ]
           }
-          # Convert the policy from JSON dict to string
-          bucket_policy = json.dumps(policy)
-          myresult=getS3Client(region).put_bucket_policy(Bucket=bucket_name, Policy=bucket_policy)
-          AUTH_PUBLIC_ACL={ 
-                "Grantee": { 
-                  "Type": "Group", 
-                  "URI": "http://acs.amazonaws.com/groups/global/AuthenticatedUsers" 
-                }, 
-                "Permission": "READ_ACP"
-              }
-          AUTH_READ_PUBLIC_ACL={ 
-                "Grantee": { 
-                  "Type": "Group", 
-                  "URI": "http://acs.amazonaws.com/groups/global/AuthenticatedUsers" 
-                }, 
-                "Permission": "READ"
-              }
-          EVERYONE_PUBLIC_ACL={ 
-                "Grantee": { 
-                  "Type": "Group", 
-                  "URI": "http://acs.amazonaws.com/groups/global/AllUsers" 
-                }, 
-                "Permission": "READ_ACP"
-              }
-          EVERYONE_READ_PUBLIC_ACL={ 
-                "Grantee": { 
-                  "Type": "Group", 
-                  "URI": "http://acs.amazonaws.com/groups/global/AllUsers" 
-                }, 
-                "Permission": "READ"
-              }
-          bucket = s3.Bucket(bucket_name)
-          bucket_acl = s3.BucketAcl(bucket_name)
-          owner={}
-          owner['ID']=bucket_acl.grants[0]['Grantee']['ID']
-          owner['DisplayName']=bucket_acl.grants[0]['Grantee']['DisplayName']
-          bucket_acl.grants.append(AUTH_PUBLIC_ACL)
-          bucket_acl.grants.append(AUTH_READ_PUBLIC_ACL)
-          bucket_acl.grants.append(EVERYONE_PUBLIC_ACL)
-          bucket_acl.grants.append(EVERYONE_READ_PUBLIC_ACL)
-          mydict={}
-          mydict['Grants']=bucket_acl.grants
-          mydict['Owner']=owner
-          bucket_acl.put(AccessControlPolicy=mydict)
-          return result
+        return result
     except ClientError as e:
         print("Could not create bucket [" + bucket_name + "]")
         print(e)

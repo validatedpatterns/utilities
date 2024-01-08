@@ -3,14 +3,20 @@ fullName: Retail
 repo: https://github.com/validatedpatterns/retail
 webHookName: ''
 owners:
-  - Martin Jackson
+  - mhjacks
 triggers:
   branches:
   - name: main
     versions:
-    - '4.13'
+    - '4.14'
 
   openshift:
+  - version: '4.13'
+    branch: v1.1
+    platforms:
+      - aws
+    buildType: stable
+
   - version: '4.12'
     branch: v1.1
     platforms:

@@ -1,6 +1,6 @@
-shortName: imageclass
-fullName: ImageClassification
-repo: https://github.com/validatedpatterns/image-classification
+shortName: emdisease
+fullName: EmergingDiseaseDetection
+repo: https://github.com/validatedpatterns/emerging-disease-detection
 webHookName: ''
 owners:
   - jrickard

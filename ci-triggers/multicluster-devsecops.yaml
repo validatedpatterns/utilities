@@ -12,7 +12,6 @@ triggers:
     - '4.14'
     - '4.13'
     - '4.12'
-    - '4.11'
 
   openshift:
   - version: '4.14'
@@ -29,11 +28,6 @@ triggers:
     branch: main
     platforms:
       - gcp
-    buildType: stable
-  - version: '4.11'
-    branch: main
-    platforms:
-      - azure
     buildType: stable
 
   subscriptions:

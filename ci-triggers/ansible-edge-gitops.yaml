@@ -13,7 +13,6 @@ triggers:
     versions:
     - '4.13'
     - '4.12'
-    - '4.11'
 
   openshift:
   - version: '4.14'
@@ -27,11 +26,6 @@ triggers:
       - aws
     buildType: stable
   - version: '4.12'
-    branch: 'v1.2'
-    platforms:
-      - aws
-    buildType: stable
-  - version: '4.11'
     branch: 'v1.2'
     platforms:
       - aws

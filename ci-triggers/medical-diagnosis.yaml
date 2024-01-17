@@ -13,7 +13,6 @@ triggers:
     versions:
     - '4.13'
     - '4.12'
-    - '4.11'
 
   openshift:
   - version: '4.14'
@@ -31,16 +30,6 @@ triggers:
     platforms:
       - azure
     buildType: stable
-  - version: '4.11'
-    buildType: stable
-    branch: 'v2.6'
-    platforms:
-      - aws
-
-  github:
-    - version: '4.11'
-      platforms:
-        - azure
 
   subscriptions:
   - name: gitops

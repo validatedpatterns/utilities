@@ -9,7 +9,7 @@ triggers:
   - name: main
     versions:
     - '4.14'
-  - name: 'v1.2'
+  - name: 'v1.3'
     versions:
     - '4.13'
     - '4.12'
@@ -21,12 +21,12 @@ triggers:
       - aws
     buildType: stable
   - version: '4.13'
-    branch: 'v1.2'
+    branch: 'v1.3'
     platforms:
       - aws
     buildType: stable
   - version: '4.12'
-    branch: 'v1.2'
+    branch: 'v1.3'
     platforms:
       - aws
     buildType: stable

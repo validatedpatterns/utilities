@@ -3,7 +3,7 @@ fullName: ConnectedVehicle
 repo: https://github.com/validatedpatterns/connected-vehicle-architecture
 webHookName: ''
 owners:
-  - bandini
+  - mbaldess
 triggers:
   branches:
   - name: main

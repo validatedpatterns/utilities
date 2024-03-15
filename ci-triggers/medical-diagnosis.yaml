@@ -8,6 +8,7 @@ triggers:
   branches:
   - name: main
     versions:
+    - '4.15'
     - '4.14'
   - name: 'v2.6'
     versions:
@@ -15,6 +16,11 @@ triggers:
     - '4.12'
 
   openshift:
+  - version: '4.15'
+    branch: main
+    platforms:
+      - azure
+    buildType: stable
   - version: '4.14'
     branch: main
     platforms:

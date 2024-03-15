@@ -77,7 +77,7 @@ def sync_buckets(s3, source_bucket, target_bucket):
     # Iterate All Objects in Your S3 Bucket Over the for Loop
     for file in srcbucket.objects.all():
       copy_source = {
-        'Bucket': 'com.validated-patterns.xray-source',
+        'Bucket': source_bucket,
         'Key': file.key
       }
       

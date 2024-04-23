@@ -8,22 +8,10 @@ triggers:
   branches:
   - name: main
     versions:
-    - '4.15'
-    - '4.14'
     - '4.13'
     - '4.12'
 
   openshift:
-  - version: '4.15'
-    branch: main
-    platforms:
-      - aws
-    buildType: stable
-  - version: '4.14'
-    branch: main
-    platforms:
-      - gcp
-    buildType: stable
   - version: '4.13'
     branch: main
     platforms:

@@ -1,3 +1,5 @@
+HUGO_VERSION ?= 0.122.0
+
 ##@ Container build tasks
 .PHONY: help
 help: ## This help message
@@ -6,7 +8,7 @@ help: ## This help message
 .PHONY: build
 build: ## Build the container locally
 	@echo "Building the homepage container"
-	buildah bud --format docker -f Containerfile -t homepage-container
+	buildah bud --format docker -f Containerfile -t homepage-container --build-arg HUGO_VERSION=$(HUGO_VERSION)
 
 .PHONY: upload
 upload: build ## Builds and then uploads the container to quay.io/hybridcloudpatterns/homepage-container:latest
@@ -16,3 +18,12 @@ upload: build ## Builds and then uploads the container to quay.io/hybridcloudpat
 .PHONY: run
 run: ## Run the local container
 	podman run -it --rm --net=host localhost/homepage-container:latest
+
+.PHONY: super-linter
+super-linter: ## Runs super linter locally
+	podman run -e RUN_LOCAL=true -e USE_FIND_ALGORITHM=true	\
+					-e VALIDATE_DOCKERFILE_HADOLINT=true \
+					$(DISABLE_LINTERS) \
+					-v $(PWD):/tmp/lint:rw,z \
+					-w /tmp/lint \
+					docker.io/github/super-linter:slim-v5

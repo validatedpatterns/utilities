@@ -12,8 +12,10 @@ make serve
 ## Build the container
 
 ```shell
-buildah bud --format docker -f Containerfile -t homepage-container
+make build
 ```
+
+Optionally you can set the Hugo version via the `HUGO_VERSION` env variable.
 
 ## Run the built container
 

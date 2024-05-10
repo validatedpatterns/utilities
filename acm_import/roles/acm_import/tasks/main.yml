@@ -1,3 +1,7 @@
+- name: Output configs
+  ansible.builtin.debug:
+    msg: "HUBCONFIG: {{ HUBCONFIG }} - REGIONCONFIG: {{ REGIONCONFIG }}"
+
 - name: Fetch regional cluster info
   ansible.builtin.include_tasks:
     file: region-fetch-api.yml

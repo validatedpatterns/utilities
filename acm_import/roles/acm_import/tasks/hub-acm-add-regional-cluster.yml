@@ -31,6 +31,10 @@
           reason: 'HubClusterAdminAccepted'
           status: 'True'
         wait_timeout: 60
+      register: create_regional
+      until: create_regional is not failed
+      retries: 10
+      delay: 10
 
     - name: "Create regional KlusterAddonConfig"
       kubernetes.core.k8s:
@@ -78,9 +82,13 @@
         state: present
         kubeconfig: "{{ REGIONCONFIG }}"
         definition: "{{ import_crds | b64decode }}"
+      retries: 10
+      delay: 20
 
     - name: "[MC] Apply ROs to new ManagedCluster"
       kubernetes.core.k8s:
         state: present
         kubeconfig: "{{ REGIONCONFIG }}"
         definition: "{{ import_ros | b64decode }}"
+      retries: 10
+      delay: 20

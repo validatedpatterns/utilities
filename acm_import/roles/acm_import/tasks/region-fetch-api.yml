@@ -11,7 +11,7 @@
 - name: Find regional cluster name
   ansible.builtin.shell: |
     {% raw %}
-    oc config view --raw -o go-template="{{ range .clusters }}{{ if eq .cluster.server \"${API}\" }}{{ .name }}{{ end }}{{ end }}"
+    oc config view --raw -o go-template="{{ range .clusters }}{{ if and (eq .cluster.server \"${API}\") (index .cluster \"certificate-authority-data\") }}{{ .name }}{{ end }}{{ end }}"
     {% endraw %}
   register: region_cluster_oc
   changed_when: false
@@ -27,7 +27,7 @@
 - name: Find regional CA
   ansible.builtin.shell: |
     {% raw %}
-    oc config view --raw -o go-template="{{ range .clusters }}{{ if eq .cluster.server \"${API}\" }}{{ index .cluster \"certificate-authority-data\" }}{{ end }}{{ end }}"
+    oc config view --raw -o go-template="{{ range .clusters }}{{ if and (eq .cluster.server \"${API}\") (index .cluster \"certificate-authority-data\") }}{{ index .cluster \"certificate-authority-data\" }}{{ end }}{{ end }}"
     {% endraw %}
   register: region_cluster_ca
   changed_when: false

@@ -1,0 +1,22 @@
+shortName: ragllm
+fullName: RAG-LLM
+repo: https://github.com/validatedpatterns-sandbox/rag-llm-gitops
+webHookName: ''
+owners:
+  - mbaldess
+triggers:
+  branches:
+  - name: main
+    versions:
+    - '4.15'
+
+  openshift:
+  - version: '4.15'
+    branch: main
+    platforms:
+      - aws
+    buildType: stable
+
+  subscriptions:
+  - name: none
+    branch: none

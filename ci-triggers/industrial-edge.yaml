@@ -15,7 +15,7 @@ triggers:
   - version: '4.13'
     branch: main
     platforms:
-      - azure
+      - gcp
     buildType: stable
   - version: '4.12'
     branch: 'main'

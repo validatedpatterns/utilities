@@ -1,4 +1,4 @@
-HUGO_VERSION ?= 0.122.0
+HUGO_VERSION ?= 0.133.1
 
 ##@ Container build tasks
 .PHONY: help

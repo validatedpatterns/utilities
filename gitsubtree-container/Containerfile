@@ -1,0 +1,4 @@
+ARG GIT_VERSION
+FROM docker.io/alpine/git:v${GIT_VERSION}
+ARG GIT_VERSION # After every from ARG vars are collected so reexport it
+RUN apk add --no-cache git-subtree="${GIT_VERSION}-r0"

@@ -1,0 +1,22 @@
+shortName: travelops
+fullName: TravelOps
+repo: https://github.com/validatedpatterns-sandbox/travelops
+webHookName: ''
+owners:
+  - jrickard
+triggers:
+  branches:
+  - name: main
+    versions:
+    - '4.15'
+
+  openshift:
+  - version: '4.15'
+    branch: main
+    platforms:
+      - aws
+    buildType: stable
+
+  subscriptions:
+  - name: none
+    branch: none

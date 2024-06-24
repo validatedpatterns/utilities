@@ -1,6 +1,6 @@
-shortName: imageclass
-fullName: ImageClassification
-repo: https://github.com/validatedpatterns/image-classification
+shortName: emergingdiseases
+fullName: Emerging Disease Detection
+repo: https://github.com/validatedpatterns/emerging-disease-detection
 webHookName: ''
 owners:
   - jrickard
@@ -8,10 +8,10 @@ triggers:
   branches:
   - name: main
     versions:
-    - '4.13'
+    - '4.15'
 
   openshift:
-  - version: '4.13'
+  - version: '4.15'
     branch: main
     platforms:
       - gcp

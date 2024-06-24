@@ -1,6 +1,6 @@
 shortName: ragllm
 fullName: RAG-LLM
-repo: https://github.com/validatedpatterns-sandbox/rag-llm-gitops
+repo: https://github.com/validatedpatterns/rag-llm-gitops
 webHookName: ''
 owners:
   - mbaldess

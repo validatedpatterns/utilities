@@ -8,6 +8,7 @@ triggers:
   branches:
   - name: main
     versions:
+    - '4.16'
     - '4.15'
     - '4.14'
   - name: 'v2.6'
@@ -16,6 +17,11 @@ triggers:
     - '4.12'
 
   openshift:
+  - version: '4.16'
+    branch: main
+    platforms:
+      - gcp
+    buildType: stable
   - version: '4.15'
     branch: main
     platforms:

@@ -19,7 +19,7 @@ triggers:
   - version: '4.16'
     branch: main
     platforms:
-      - aws
+      - azure
     buildType: stable
   - version: '4.15'
     branch: main

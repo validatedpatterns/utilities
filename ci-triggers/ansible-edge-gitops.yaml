@@ -6,39 +6,37 @@ owners:
   - martjack
 triggers:
   branches:
-  - name: main
+  - name: 'v1.4'
     versions:
     - '4.16'
     - '4.15'
     - '4.14'
-  - name: 'v1.3'
-    versions:
     - '4.13'
     - '4.12'
 
   openshift:
   - version: '4.16'
-    branch: main
+    branch: 'v1.4'
     platforms:
       - aws
     buildType: stable
   - version: '4.15'
-    branch: main
+    branch: 'v1.4'
     platforms:
       - aws
     buildType: stable
   - version: '4.14'
-    branch: main
+    branch: 'v1.4'
     platforms:
       - aws
     buildType: stable
   - version: '4.13'
-    branch: 'v1.3'
+    branch: 'v1.4'
     platforms:
       - aws
     buildType: stable
   - version: '4.12'
-    branch: 'v1.3'
+    branch: 'v1.4'
     platforms:
       - aws
     buildType: stable

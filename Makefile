@@ -10,19 +10,26 @@ super-linter: ## Runs super linter locally
 	podman run -e RUN_LOCAL=true -e USE_FIND_ALGORITHM=true	\
 					-e VALIDATE_ANSIBLE=false \
 					-e VALIDATE_BASH=false \
+					-e VALIDATE_CHECKOV=false \
 					-e VALIDATE_DOCKERFILE_HADOLINT=false \
 					-e VALIDATE_JSCPD=false \
 					-e VALIDATE_KUBERNETES_KUBECONFORM=false \
+					-e VALIDATE_MARKDOWN_PRETTIER=false \
+					-e VALIDATE_NATURAL_LANGUAGE=false \
 					-e VALIDATE_PYTHON_BLACK=false \
 					-e VALIDATE_PYTHON_FLAKE8=false \
 					-e VALIDATE_PYTHON_ISORT=false \
 					-e VALIDATE_PYTHON_MYPY=false \
+					-e VALIDATE_PYTHON_PYINK=false \
 					-e VALIDATE_PYTHON_PYLINT=false \
+					-e VALIDATE_PYTHON_RUFF=false \
+					-e VALIDATE_SHELL_SHFMT=false \
 					-e VALIDATE_YAML=false \
+					-e VALIDATE_YAML_PRETTIER=false \
 					$(DISABLE_LINTERS) \
 					-v $(PWD):/tmp/lint:rw,z \
 					-w /tmp/lint \
-					docker.io/github/super-linter:slim-v5
+					ghcr.io/super-linter/super-linter:slim-v7
 
 .PHONY: ansible-lint
 ansible-lint: ## run ansible lint on ansible/ folder

@@ -5,7 +5,7 @@ ORG="validatedpatterns"
 GITBASE="git@github.com:${ORG}"
 COMMON="https://github.com/${ORG}/common.git"
 BRANCH="common-automatic-update" # name of the branch being used locally and on the remote fork
-MAINBRANCH="main"
+MAINBRANCH="v1"
 TMPD=$(mktemp -d /tmp/commonrebase.XXXXX)
 LOG="${TMPD}/log"
 
@@ -28,6 +28,7 @@ function usage {
   echo "Usage:"
   echo "    -h|--help                   - Optional. Prints this help page"
   echo "    -p|--prcreate               - Optional. Without this no actual PR is created, just the preparation steps are run"
+  echo "    -b|--branch                 - Optional. Which common branch to use when updating (defaults to v1)"
   echo "    -u|--usergithub <user>      - Mandatory. The PR will be pushed into the ${BRANCH} of a fork belonging to <user>"
   echo "                                  The forked repo in the users space, must exist"
   echo "    -r|--repos <repo1,repo2,..> - Mandatory. List of repos to update the common/ subtree in. Separated by comma"
@@ -62,6 +63,10 @@ while [ $# -gt 0 ]; do
       ;;
     -s|--skip-common-check)
       SKIPCOMMONCHECK="y"
+      ;;
+    -b|--branch)
+      MAINBRANCH="$2"
+      shift
       ;;
     -u|--usergithub)
       USERGITHUB="$2"

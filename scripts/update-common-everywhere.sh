@@ -93,16 +93,19 @@ if [ ${#GHREPOS[@]} -eq 0 ]; then
 fi
 
 pushd "$TMPD"
-echo "Working in ${TMPD} on the following repos: ${GHREPOS[*]}" | tee "$LOG"
-git clone "${COMMON}" >> "$LOG"
+echo "Working in ${TMPD} on the following repos: ${GHREPOS[*]}" | tee "${LOG}"
+git clone "${COMMON}" >> "${LOG}"
+pushd "common"
+git checkout "origin/${MAINBRANCH}" -b "${MAINBRANCH}" >> "${LOG}"
+popd
 for i in "${GHREPOS[@]}"; do
   echo "Cloning $i"
-  git clone "${GITBASE}/${i}.git" >> "$LOG"
+  git clone "${GITBASE}/${i}.git" >> "${LOG}"
   pushd "$i"
-  git remote add common-upstream -f ../common | tee -a "$LOG"
-  git remote add fork -f "git@github.com:${USERGITHUB}/${i}.git" | tee -a "$LOG"
-  git checkout -b "${BRANCH}" | tee -a "$LOG"
-  git merge --no-edit -s subtree -Xtheirs -Xsubtree=common "common-upstream/${MAINBRANCH}" | tee -a "$LOG"
+  git remote add common-upstream -f ../common | tee -a "${LOG}"
+  git remote add fork -f "git@github.com:${USERGITHUB}/${i}.git" | tee -a "${LOG}"
+  git checkout -b "${BRANCH}" | tee -a "${LOG}"
+  git merge --no-edit -s subtree -Xtheirs -Xsubtree=common "common-upstream/${MAINBRANCH}" | tee -a "${LOG}"
 
   # Check that no commit left conflicts
   if grep -IR -e '^<<<' -e '^>>>' . 2>/dev/null; then
@@ -112,7 +115,7 @@ for i in "${GHREPOS[@]}"; do
 
   # Check that upstream common/ and the subtree common/ are identical (add --no-dereference due to our commmon -> symlink)
   set +e
-  diff -urN --exclude='.git' --no-dereference ../common ./common 2>&1 | tee "$LOG"
+  diff -urN --exclude='.git' --no-dereference ../common ./common 2>&1 | tee "${LOG}"
   ret=$?
   set -e
   if [ $ret -ne 0 ]; then
@@ -124,7 +127,7 @@ for i in "${GHREPOS[@]}"; do
     fi
   fi
 
-  git push fork "${BRANCH}" -f | tee -a "$LOG"
+  git push fork "${BRANCH}" -f | tee -a "${LOG}"
   gh repo set-default "${ORG}/${i}"
 
   # Automatically create a PR. This needs more testing and explaining before we enable it

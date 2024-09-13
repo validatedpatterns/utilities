@@ -5,7 +5,7 @@ ORG="validatedpatterns"
 GITBASE="git@github.com:${ORG}"
 COMMON="https://github.com/${ORG}/common.git"
 BRANCH="common-automatic-update" # name of the branch being used locally and on the remote fork
-MAINBRANCH="main"
+MAINBRANCH=${MAINBRANCH:-v1}
 TMPD=$(mktemp -d /tmp/commonrebase.XXXXX)
 LOG="${TMPD}/log"
 

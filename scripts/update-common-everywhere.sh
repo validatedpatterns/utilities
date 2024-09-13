@@ -136,7 +136,7 @@ for i in "${GHREPOS[@]}"; do
   # The --head USERGITHUB:BRANCH is needed due to https://github.com/cli/cli/issues/2691
   if [ "$PRCREATE" == 'y' ]; then
     set +e
-    gout=$(gh pr create --title "Automatic common/ update" \
+    gout=$(gh pr create --title "Automatic common/ update from branch ${MAINBRANCH}" \
        --assignee "@me" \
        --body "This is part of an automatic process run by ${USERGITHUB} on $(date)" \
        --repo "${ORG}/${i}" --base "${MAINBRANCH}" --head "${USERGITHUB}:${BRANCH}" 2>&1)

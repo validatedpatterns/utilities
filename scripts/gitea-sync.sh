@@ -106,7 +106,7 @@ mkdir -p "${TEMP_FOLDER}"
 pushd "${TEMP_FOLDER}"
 if [ ! -d "${REPO_NAME}" ]; then
     echo "Local git repo does not exist let's clone ${UPSTREAM_REPO} and branch ${BRANCH}"
-    git clone --branch "${BRANCH}" --single-branch "${UPSTREAM_REPO}"
+    git clone --branch "${BRANCH}" --single-branch "${UPSTREAM_REPO}" "${REPO_NAME}"
     pushd "${REPO_NAME}"
 else
     echo "Local git repo exists, pulling branch ${BRANCH}"
@@ -114,6 +114,6 @@ else
     git pull origin "${BRANCH}"
 fi
 echo "Pushing ${BRANCH} to ${URL}"
-git -c http.sslVerify=false push "${AUTH_URL}/${GITEA_USER}/${REPO_NAME}.git" "${BRANCH}:${BRANCH}"
+git -c http.sslVerify=false push "${AUTH_URL}/${GITEA_USER}/${REPO_NAME}" "${BRANCH}:${BRANCH}"
 popd
 popd

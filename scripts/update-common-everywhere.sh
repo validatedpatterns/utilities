@@ -5,7 +5,7 @@ ORG="validatedpatterns"
 GITBASE="git@github.com:${ORG}"
 COMMON="https://github.com/${ORG}/common.git"
 BRANCH="common-automatic-update" # name of the branch being used locally and on the remote fork
-MAINBRANCH="v1"
+COMMONBRANCH="v1"
 TMPD=$(mktemp -d /tmp/commonrebase.XXXXX)
 LOG="${TMPD}/log"
 
@@ -65,7 +65,7 @@ while [ $# -gt 0 ]; do
       SKIPCOMMONCHECK="y"
       ;;
     -b|--branch)
-      MAINBRANCH="$2"
+      COMMONBRANCH="$2"
       shift
       ;;
     -u|--usergithub)
@@ -107,7 +107,7 @@ for i in "${GHREPOS[@]}"; do
   git remote add common-upstream -f ../common | tee -a "$LOG"
   git remote add fork -f "git@github.com:${USERGITHUB}/${i}.git" | tee -a "$LOG"
   git checkout -b "${BRANCH}" | tee -a "$LOG"
-  git merge --no-edit -s subtree -Xtheirs -Xsubtree=common "common-upstream/${MAINBRANCH}" | tee -a "$LOG"
+  git merge --no-edit -s subtree -Xtheirs -Xsubtree=common "common-upstream/${COMMONBRANCH}" | tee -a "$LOG"
 
   # Check that no commit left conflicts
   if grep -IR -e '^<<<' -e '^>>>' . 2>/dev/null; then
@@ -136,14 +136,14 @@ for i in "${GHREPOS[@]}"; do
   # The --head USERGITHUB:BRANCH is needed due to https://github.com/cli/cli/issues/2691
   if [ "$PRCREATE" == 'y' ]; then
     set +e
-    gout=$(gh pr create --title "Automatic common/ update from branch ${MAINBRANCH}" \
+    gout=$(gh pr create --title "Automatic common/ update from branch ${COMMONBRANCH}" \
        --assignee "@me" \
        --body "This is part of an automatic process run by ${USERGITHUB} on $(date)" \
-       --repo "${ORG}/${i}" --base "${MAINBRANCH}" --head "${USERGITHUB}:${BRANCH}" 2>&1)
+       --repo "${ORG}/${i}" --base "${COMMONBRANCH}" --head "${USERGITHUB}:${BRANCH}" 2>&1)
     ret=$?
     set -e
     if [ $ret -ne 0 ]; then
-      if grep "No commits between ${ORG}:${MAINBRANCH} and" <<< "$gout"; then
+      if grep "No commits between ${ORG}:${COMMONBRANCH} and" <<< "$gout"; then
         echo "PR not created as there were no commits to push for"
         continue
       fi

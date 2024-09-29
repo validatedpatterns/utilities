@@ -100,6 +100,9 @@ fi
 pushd "$TMPD"
 echo "Working in ${TMPD} on the following repos: ${GHREPOS[*]}" | tee "$LOG"
 git clone "${COMMON}" >> "$LOG"
+pushd common
+git checkout "${COMMONBRANCH}" >> "$LOG"
+popd
 for i in "${GHREPOS[@]}"; do
   echo "Cloning $i"
   git clone "${GITBASE}/${i}.git" >> "$LOG"

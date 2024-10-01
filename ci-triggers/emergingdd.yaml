@@ -1,0 +1,22 @@
+shortName: emergingdd
+fullName: EmergingDiseaseDetection
+repo: https://github.com/validatedpatterns/emerging-disease-detection
+webHookName: ''
+owners:
+  - jrickard
+triggers:
+  branches:
+  - name: main
+    versions:
+    - '4.13'
+
+  openshift:
+  - version: '4.13'
+    branch: main
+    platforms:
+      - gcp
+    buildType: stable
+
+  subscriptions:
+  - name: none
+    branch: none

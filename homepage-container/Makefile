@@ -26,4 +26,4 @@ super-linter: ## Runs super linter locally
 					$(DISABLE_LINTERS) \
 					-v $(PWD):/tmp/lint:rw,z \
 					-w /tmp/lint \
-					docker.io/github/super-linter:slim-v5
+					ghcr.io/super-linter/super-linter:slim-v7

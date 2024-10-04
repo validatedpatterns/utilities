@@ -1,5 +1,9 @@
 # Homepage Container
 
+## Automatic build
+
+Any pushes to main will automatically trigger a rebuild and a push in docker
+
 ## Run
 
 If you want to just run the homepage container do:

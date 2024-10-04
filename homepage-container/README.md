@@ -2,7 +2,8 @@
 
 ## Automatic build
 
-Any pushes to main will automatically trigger a rebuild and a push in docker
+Any pushes to main will automatically trigger a rebuild and a push in the quay.io/hybridcloudpatterns/homepage-container
+repository
 
 ## Run
 

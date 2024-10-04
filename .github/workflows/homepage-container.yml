@@ -1,0 +1,34 @@
+---
+name: "Container build and test"
+on:
+  push:
+    paths:
+      - 'homepage-container/**'
+      - '.github/workflows/homepage-container.yml'
+  pull_request:
+    paths:
+      - 'homepage-container/**'
+      - '.github/workflows/homepage-container.yml'
+  workflow_call:
+
+permissions: read-all
+
+jobs:
+  podman-build:
+    name: Homepage Container Build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Homepage Container Build
+        run: |
+          set -e
+          cd homepage-container
+          make manifest podman-build-amd64
+
+      - name: Run Homepage Container tests
+        run: |
+          set -e
+          cd homepage-container
+          make test-amd64

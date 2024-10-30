@@ -8,6 +8,7 @@ triggers:
   branches:
   - name: 'v1.4'
     versions:
+    - '4.17'
     - '4.16'
     - '4.15'
     - '4.14'
@@ -15,6 +16,11 @@ triggers:
     - '4.12'
 
   openshift:
+  - version: '4.17'
+    branch: 'v1.4'
+    platforms:
+      - aws
+    buildType: stable
   - version: '4.16'
     branch: 'v1.4'
     platforms:

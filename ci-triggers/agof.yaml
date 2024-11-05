@@ -6,13 +6,13 @@ owners:
   - martjack
 triggers:
   branches:
-  - name: main
+  - name: v1
     versions:
     - 'none'
 
   openshift:
   - version: 'none'
-    branch: main
+    branch: v1
     platforms:
       - aws
     buildType: stable

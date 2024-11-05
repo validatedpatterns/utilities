@@ -1,0 +1,22 @@
+shortName: agof
+fullName: AnsibleGitopsFramework
+repo: https://github.com/validatedpatterns/agof
+webHookName: ''
+owners:
+  - martjack
+triggers:
+  branches:
+  - name: main
+    versions:
+    - 'none'
+
+  openshift:
+  - version: 'none'
+    branch: main
+    platforms:
+      - aws
+    buildType: stable
+
+  subscriptions:
+  - name: none
+    branch: none

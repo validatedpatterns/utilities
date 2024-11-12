@@ -114,6 +114,6 @@ else
     git pull origin "${BRANCH}"
 fi
 echo "Pushing ${BRANCH} to ${URL}"
-git -c http.sslVerify=false push "${AUTH_URL}/${GITEA_USER}/${REPO_NAME}" "${BRANCH}:${BRANCH}"
+git -c http.sslVerify=false push "${AUTH_URL}/${GITEA_USER}/${REPO_NAME}" -f "${BRANCH}:${BRANCH}"
 popd
 popd

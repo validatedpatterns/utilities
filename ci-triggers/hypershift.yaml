@@ -1,0 +1,24 @@
+shortName: hypershift
+fullName: Hypershift
+repo: https://github.com/validatedpatterns-sandbox/hypershift
+webHookName: ''
+owners:
+  - jrickard
+triggers:
+  branches:
+  - name: main
+    versions:
+    - '4.17'
+    - '4.16'
+
+  openshift:
+  - version: '4.17'
+    branch: main
+    platforms:
+      - aws
+    buildType: stable
+  - version: '4.16'
+    branch: main
+    platforms:
+      - aws
+    buildType: stable

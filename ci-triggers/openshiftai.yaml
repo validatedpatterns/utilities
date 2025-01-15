@@ -1,0 +1,18 @@
+shortName: openshiftai
+fullName: OpenShift AI
+repo: https://github.com/validatedpatterns-sandbox/openshift-ai
+webHookName: ''
+owners:
+  - jrickard
+triggers:
+  branches:
+  - name: main
+    versions:
+    - '4.17'
+
+  openshift:
+  - version: '4.17'
+    branch: main
+    platforms:
+      - baremetal
+    buildType: stable

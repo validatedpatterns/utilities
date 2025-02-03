@@ -15,7 +15,6 @@ triggers:
   - name: 'v2.6'
     versions:
     - '4.13'
-    - '4.12'
 
   openshift:
   - version: '4.17'
@@ -42,11 +41,6 @@ triggers:
     branch: 'v2.6'
     platforms:
       - gcp
-    buildType: stable
-  - version: '4.12'
-    branch: 'v2.6'
-    platforms:
-      - azure
     buildType: stable
 
   subscriptions:

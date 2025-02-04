@@ -1,4 +1,4 @@
-shortName: mcgitopshypershift
+shortName: mcgitopshcp
 fullName: MultiCloudGitopsHypershift
 repo: https://github.com/validatedpatterns/multicloud-gitops
 webHookName: ''

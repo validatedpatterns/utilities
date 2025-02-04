@@ -1,9 +1,9 @@
-shortName: travelops
-fullName: TravelOps
-repo: https://github.com/validatedpatterns-sandbox/travelops
+shortName: mcgitopsstandalone
+fullName: MultiCloudGitopsStandalone
+repo: https://github.com/validatedpatterns/multicloud-gitops
 webHookName: ''
 owners:
-  - jrickard
+  - mbaldess
 triggers:
   branches:
   - name: main
@@ -15,12 +15,12 @@ triggers:
   - version: '4.17'
     branch: main
     platforms:
-      - aws
+      - gcp
     buildType: stable
   - version: '4.16'
     branch: main
     platforms:
-      - aws
+      - azure
     buildType: stable
 
   subscriptions:

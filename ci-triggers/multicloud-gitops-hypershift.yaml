@@ -1,9 +1,9 @@
-shortName: travelops
-fullName: TravelOps
-repo: https://github.com/validatedpatterns-sandbox/travelops
+shortName: mcgitopshypershift
+fullName: MultiCloudGitopsHypershift
+repo: https://github.com/validatedpatterns/multicloud-gitops
 webHookName: ''
 owners:
-  - jrickard
+  - mbaldess
 triggers:
   branches:
   - name: main

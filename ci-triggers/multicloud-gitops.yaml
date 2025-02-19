@@ -20,7 +20,7 @@ triggers:
   - version: '4.16'
     branch: main
     platforms:
-      - gcp
+      - aws
     buildType: stable
 
   subscriptions:

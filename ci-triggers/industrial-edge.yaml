@@ -15,12 +15,12 @@ triggers:
   - version: '4.17'
     branch: main
     platforms:
-      - gcp
+      - aws
     buildType: stable
   - version: '4.16'
     branch: main
     platforms:
-      - aws
+      - azure
     buildType: stable
 
   subscriptions:

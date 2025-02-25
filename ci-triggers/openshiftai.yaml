@@ -14,5 +14,6 @@ triggers:
   - version: '4.17'
     branch: rhoai
     platforms:
+      - aws
       - baremetal
     buildType: stable

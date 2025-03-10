@@ -8,10 +8,15 @@ triggers:
   branches:
   - name: 'v1.4'
     versions:
+    - '4.18'
     - '4.17'
     - '4.16'
 
   openshift:
+  - version: '4.18'
+    branch: 'v1.4'
+    platforms:
+      - aws
   - version: '4.17'
     branch: 'v1.4'
     platforms:

@@ -1,5 +1,5 @@
-shortName: operatormcgitops
-fullName: OperatorMultiCloudGitops
+shortName: patternsoperator
+fullName: PatternsOperator
 repo: https://github.com/validatedpatterns/patterns-operator
 webHookName: ''
 owners:

@@ -3,7 +3,7 @@ fullName: DummyTest
 repo: https://github.com/validatedpatterns/dummytest
 webHookName: ''
 owners:
-  - mlabonte
+  - UV196F5U3 # mlabonte
 triggers:
   branches:
   - name: main

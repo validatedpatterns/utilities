@@ -3,7 +3,7 @@ fullName: MedicalDiagnosis
 repo: https://github.com/validatedpatterns/medical-diagnosis
 webHookName: 'medical-diagnosis'
 owners:
-  - jrickard
+  - UQ6PS3B29 # jrickard
 triggers:
   branches:
   - name: main

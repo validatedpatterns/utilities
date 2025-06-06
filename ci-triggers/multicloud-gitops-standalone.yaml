@@ -3,7 +3,7 @@ fullName: MultiCloudGitopsStandalone
 repo: https://github.com/validatedpatterns/multicloud-gitops
 webHookName: ''
 owners:
-  - mbaldess
+  - U02EYU98JFR # mbaldess
 triggers:
   branches:
   - name: main

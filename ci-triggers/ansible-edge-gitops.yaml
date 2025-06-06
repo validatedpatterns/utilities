@@ -3,7 +3,7 @@ fullName: AnsibleEdgeGitops
 repo: https://github.com/validatedpatterns/ansible-edge-gitops
 webHookName: ''
 owners:
-  - martjack
+  - U02A161R524 # martjack
 triggers:
   branches:
   - name: 'v1.4'

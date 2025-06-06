@@ -3,7 +3,7 @@ fullName: PatternsOperator
 repo: https://github.com/validatedpatterns/patterns-operator
 webHookName: ''
 owners:
-  - mbaldess
+  - U02EYU98JFR # mbaldess
 triggers:
   branches:
   - name: main

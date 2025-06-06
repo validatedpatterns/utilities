@@ -3,7 +3,7 @@ fullName: Hypershift
 repo: https://github.com/validatedpatterns-sandbox/hypershift
 webHookName: ''
 owners:
-  - jrickard
+  - UQ6PS3B29 # jrickard
 triggers:
   branches:
   - name: main

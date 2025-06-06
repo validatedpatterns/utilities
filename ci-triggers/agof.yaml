@@ -3,7 +3,7 @@ fullName: AnsibleGitopsFramework
 repo: https://github.com/validatedpatterns/agof
 webHookName: ''
 owners:
-  - martjack
+  - U02A161R524 # martjack
 triggers:
   branches:
   - name: v1

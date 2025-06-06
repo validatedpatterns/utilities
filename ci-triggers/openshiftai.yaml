@@ -3,7 +3,7 @@ fullName: OpenShiftAI
 repo: https://github.com/validatedpatterns-sandbox/openshift-ai
 webHookName: ''
 owners:
-  - jrickard
+  - UQ6PS3B29 # jrickard
 triggers:
   branches:
   - name: rhoai

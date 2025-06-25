@@ -29,5 +29,5 @@ triggers:
     buildType: stable
 
   subscriptions:
-  - name: none
-    branch: none
+  - name: nfd
+    branch: main

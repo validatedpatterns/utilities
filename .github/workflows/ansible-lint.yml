@@ -8,10 +8,13 @@ jobs:
 
     steps:
       # Important: This sets up your GITHUB_WORKSPACE environment variable
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
+        with:
+          persist-credentials: false
 
       - name: Lint Ansible Playbook
-        uses: ansible/ansible-lint-action@v6
+        uses: ansible/ansible-lint@main
         # Let's point it to the path
         with:
-          path: "acm_import/"
+          setup_python: "true"
+          working_directory: "acm_import/"

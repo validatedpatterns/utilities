@@ -5,6 +5,8 @@ on: [push, pull_request]
 jobs:
   build:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
 
     steps:
       # Important: This sets up your GITHUB_WORKSPACE environment variable
@@ -13,7 +15,7 @@ jobs:
           persist-credentials: false
 
       - name: Lint Ansible Playbook
-        uses: ansible/ansible-lint@main
+        uses: ansible/ansible-lint@50373efb440dd3b524956c075af715cd00eaf20b # v25.8.2
         # Let's point it to the path
         with:
           setup_python: "true"

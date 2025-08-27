@@ -3,7 +3,7 @@ NAME ?= homepage-container
 TAG ?= latest
 CONTAINER ?= $(NAME):$(TAG)
 REGISTRY ?= localhost
-UPLOADREGISTRY ?= quay.io/hybridcloudpatterns
+UPLOADREGISTRY ?= quay.io/validatedpatterns
 
 TESTCOMMAND := "set -e; echo '* Hugo version: '; hugo version ;"
 
@@ -60,7 +60,7 @@ test-arm64: ## Prints the test of most tools inside the container arm64
 	@podman run --arch=arm64 --rm -it --net=host --entrypoint /bin/bash "${REGISTRY}/${CONTAINER}-arm64" -c $(TESTCOMMAND)
 
 .PHONY: upload
-upload: ## Uploads the container to quay.io/hybridcloudpatterns/homepage-container:latest
+upload: ## Uploads the container to quay.io/validatedpatterns/homepage-container:latest
 	@echo "Uploading the ${REGISTRY}/${CONTAINER} container to ${UPLOADREGISTRY}/${CONTAINER}"
 	buildah manifest push --all "${REGISTRY}/${CONTAINER}" "docker://${UPLOADREGISTRY}/${CONTAINER}"
 

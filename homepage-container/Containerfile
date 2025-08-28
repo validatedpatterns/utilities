@@ -7,7 +7,7 @@ ARG ALTTARGETARCH
 
 # Temporary hack because extras-common repo seems to be busted
 RUN microdnf install -y --nodocs --setopt=install_weak_deps=0 \
-    curl tar gzip ruby ruby-devel gcc gcc-c++ make \
+    curl tar gzip zip ruby ruby-devel gcc gcc-c++ make \
  && curl -fsSL "https://github.com/gohugoio/hugo/releases/download/v${HUGO_VERSION}/hugo_extended_${HUGO_VERSION}_linux-${TARGETARCH}.tar.gz" \
     | tar -xzC /usr/local/bin hugo \
  && chmod +x /usr/local/bin/hugo \

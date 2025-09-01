@@ -17,6 +17,8 @@ RUN microdnf install -y --nodocs --setopt=install_weak_deps=0 \
  && microdnf clean all \
  && rm -rf /var/cache/yum
 
+RUN git config --system --add safe.directory '*'
+
 EXPOSE 4000
 
 WORKDIR /site

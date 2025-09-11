@@ -3,7 +3,7 @@ fullName: RAG-LLM
 repo: https://github.com/validatedpatterns/rag-llm-gitops
 webHookName: ''
 owners:
-  - mbaldess
+  - dminnear
 triggers:
   branches:
   - name: main

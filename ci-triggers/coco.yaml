@@ -1,0 +1,34 @@
+shortName: coco
+fullName: CoCo
+repo: https://github.com/validatedpatterns/coco-pattern
+webHookName: ''
+owners:
+  - jrickard
+triggers:
+  branches:
+  - name: 'main'
+    versions:
+    - '4.19'
+    - '4.18'
+    - '4.16'
+
+  openshift:
+  - version: '4.19'
+    branch: 'main'
+    platforms:
+      - azure
+    buildType: stable
+  - version: '4.18'
+    branch: 'main'
+    platforms:
+      - azure
+    buildType: stable
+  - version: '4.16'
+    branch: 'main'
+    platforms:
+      - azure
+    buildType: stable
+
+  subscriptions:
+  - name: none
+    branch: none

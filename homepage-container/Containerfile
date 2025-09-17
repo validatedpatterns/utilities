@@ -4,15 +4,27 @@ FROM registry.access.redhat.com/ubi10/ubi-minimal
 ARG HUGO_VERSION="0.133.1"
 ARG TARGETARCH
 ARG ALTTARGETARCH
+ARG VALE_VERSION="3.12.0"
 
 # Temporary hack because extras-common repo seems to be busted
 RUN microdnf install -y --nodocs --setopt=install_weak_deps=0 \
-    curl tar gzip zip git ruby ruby-devel gcc gcc-c++ make \
+    curl tar gzip zip git ruby ruby-devel gcc gcc-c++ make jq \
  && curl -fsSL "https://github.com/gohugoio/hugo/releases/download/v${HUGO_VERSION}/hugo_extended_${HUGO_VERSION}_linux-${TARGETARCH}.tar.gz" \
     | tar -xzC /usr/local/bin hugo \
  && chmod +x /usr/local/bin/hugo \
  && curl -fsSL https://htmltest.wjdp.uk | bash -s -- -b /usr/local/bin \
  && gem install --no-document asciidoctor rouge \
+ && set -e; \
+      case "${TARGETARCH}" in \
+         amd64) VALE_ARCH="Linux_64-bit" ;; \
+         arm64) VALE_ARCH="Linux_arm64"  ;; \
+         *) echo "Unsupported TARGETARCH: ${TARGETARCH}"; exit 1 ;; \
+      esac; \
+      VALE_TGZ="vale_${VALE_VERSION}_${VALE_ARCH}.tar.gz"; \
+      curl -fsSL "https://github.com/errata-ai/vale/releases/download/v${VALE_VERSION}/${VALE_TGZ}" -o "/tmp/${VALE_TGZ}" \
+ && tar -xzf "/tmp/${VALE_TGZ}" -C /usr/local/bin vale \
+ && chmod +x /usr/local/bin/vale \
+ && rm -f "/tmp/${VALE_TGZ}" \
  && microdnf remove -y ruby-devel gcc gcc-c++ make \
  && microdnf clean all \
  && rm -rf /var/cache/yum

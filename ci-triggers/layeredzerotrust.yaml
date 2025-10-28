@@ -1,0 +1,22 @@
+shortName: layeredzerotrust
+fullName: LayeredZeroTrust
+repo: https://github.com/validatedpatterns/layeredzerotrust
+webHookName: ''
+owners:
+  - yuqchen
+triggers:
+  branches:
+  - name: 'main'
+    versions:
+    - '4.19'
+
+  openshift:
+  - version: '4.19'
+    branch: 'main'
+    platforms:
+      - aws
+    buildType: stable
+
+  subscriptions:
+  - name: none
+    branch: none

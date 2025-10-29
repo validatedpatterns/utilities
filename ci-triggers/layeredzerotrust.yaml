@@ -8,9 +8,15 @@ triggers:
   branches:
   - name: 'main'
     versions:
+    - '4.20'
     - '4.19'
 
   openshift:
+  - version: '4.20'
+    branch: 'main'
+    platforms:
+      - aws
+    buildType: stable
   - version: '4.19'
     branch: 'main'
     platforms:

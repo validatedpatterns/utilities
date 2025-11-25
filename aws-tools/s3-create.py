@@ -14,15 +14,11 @@ try:
     aws_access_key_id = os.environ["AWS_ACCESS_KEY_ID"]
     aws_secret_access_key = os.environ["AWS_SECRET_ACCESS_KEY"]
 except KeyError:
-    print(
-        "Please set AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY environment variables for AWS access."
-    )
+    print("Please set AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY environment variables for AWS access.")
     exit()
 
 if not aws_access_key_id or not aws_secret_access_key:
-    print(
-        "AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY environment variables cannot be empty."
-    )
+    print("AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY environment variables cannot be empty.")
     exit()
 
 argumentList = sys.argv[1:]

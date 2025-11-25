@@ -86,13 +86,7 @@ def sync_buckets(s3, source_bucket, target_bucket):
             print(file.key + "- File Copied")
         return True
     except ClientError as e:
-        print(
-            "Could not sync buckets: ["
-            + source_bucket
-            + "] ==> ["
-            + target_bucket
-            + "]"
-        )
+        print("Could not sync buckets: [" + source_bucket + "] ==> [" + target_bucket + "]")
         print(e)
         raise
 

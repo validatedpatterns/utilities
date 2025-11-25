@@ -1,12 +1,9 @@
 #!/usr/bin/env python
 import boto3
 import os
-import botocore
 from botocore.exceptions import ClientError
 import sys
 import getopt
-import os
-import json
 
 regions=['us-west-1', 'us-west-2', 'us-east-1', 'us-east-2']
 aws_access_key_id = os.environ['AWS_ACCESS_KEY_ID']

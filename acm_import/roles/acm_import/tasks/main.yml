@@ -1,13 +1,13 @@
 - name: Output configs
   ansible.builtin.debug:
-    msg: "HUBCONFIG: {{ HUBCONFIG }} - REGIONCONFIG: {{ REGIONCONFIG }}"
+    msg: "HUBCONFIG: {{ HUBCONFIG }} - SPOKECONFIG: {{ SPOKECONFIG }}"
 
 - name: Fetch regional cluster info
   ansible.builtin.include_tasks:
     file: region-fetch-api.yml
     apply:
       environment:
-        KUBECONFIG: "{{ REGIONCONFIG }}"
+        KUBECONFIG: "{{ SPOKECONFIG }}"
 
 - name: Add the regional cluster to the ACM hub
   ansible.builtin.include_tasks:

@@ -1,6 +1,6 @@
 # Playbook and role to automatically import clusters in ACM
 
-Just export `HUBCONFIG` pointing to the hub/acm cluster and `REGIONCONFIG` pointing to the regional cluster.
+Just export `HUBCONFIG` pointing to the hub/acm cluster and `SPOKECONFIG` pointing to the spoke cluster.
 
 Then run:
 `ansible-playbook ./post.yml`

@@ -80,7 +80,7 @@
     - name: "[MC] Apply CRDs to new ManagedCluster"
       kubernetes.core.k8s:
         state: present
-        kubeconfig: "{{ REGIONCONFIG }}"
+        kubeconfig: "{{ SPOKECONFIG }}"
         definition: "{{ import_crds | b64decode }}"
       retries: 10
       delay: 20
@@ -88,7 +88,7 @@
     - name: "[MC] Apply ROs to new ManagedCluster"
       kubernetes.core.k8s:
         state: present
-        kubeconfig: "{{ REGIONCONFIG }}"
+        kubeconfig: "{{ SPOKECONFIG }}"
         definition: "{{ import_ros | b64decode }}"
       retries: 10
       delay: 20

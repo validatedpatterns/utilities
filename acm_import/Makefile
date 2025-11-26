@@ -7,4 +7,4 @@ help:
 
 .PHONY: import
 import: ## Imports SPOKECONFIG into HUBCONFIG defined clusters
-	ansible-playbook -e clustergroup=$(CLUSTERGROUP) post.yml
+	ansible-playbook -e clustergroup_label=$(CLUSTERGROUP) post.yml

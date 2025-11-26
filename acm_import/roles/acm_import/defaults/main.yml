@@ -1,4 +1,4 @@
-clustergroup: group-one
+clustergroup_label: group-one
 ocm_iam_policy_controller: true
 ocm_search_controller: true
 ocm_policy_controller: true

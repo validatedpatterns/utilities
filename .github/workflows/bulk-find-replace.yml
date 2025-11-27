@@ -1,0 +1,51 @@
+name: Bulk Find and Replace Across Organization
+
+on:
+  workflow_dispatch:
+    inputs:
+      organization:
+        description: 'GitHub organization name'
+        required: true
+        type: string
+      repositories:
+        description: 'Comma-separated list of repository names to process (leave empty for all repos). Example: repo1,repo2,repo3'
+        required: false
+        type: string
+        default: ''
+      dry_run:
+        description: 'Dry run mode (no PRs created)'
+        required: false
+        default: 'false'
+        type: choice
+        options:
+          - 'true'
+          - 'false'
+
+jobs:
+  find-and-replace:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          pip install -r .github/scripts/requirements.txt
+
+      - name: Run find and replace script
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ORGANIZATION: ${{ inputs.organization }}
+          REPOSITORIES: ${{ inputs.repositories }}
+          DRY_RUN: ${{ inputs.dry_run }}
+        run: |
+          python .github/scripts/bulk_find_replace.py
+

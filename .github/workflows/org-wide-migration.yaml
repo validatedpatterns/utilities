@@ -1,0 +1,196 @@
+name: Org-Wide Domain Migration
+
+on:
+  workflow_dispatch:
+    inputs:
+      organization:
+        description: 'The GitHub Organization name'
+        required: true
+      repo_filter:
+        description: 'Specific repositories to target (comma-separated). Leave empty for ALL.'
+        required: false
+        type: string
+      mode:
+        description: 'Choose Action Mode'
+        required: true
+        default: 'apply'
+        type: choice
+        options:
+        - apply
+        - revert
+      dry_run:
+        description: 'Dry Run (logs only, no push)'
+        required: true
+        default: 'false'
+        type: boolean
+
+jobs:
+  manage-migration:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Controller Repo
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+
+      - name: Initialize Report
+        run: |
+          echo "# Domain Migration Report (${{ inputs.mode }})" > migration_summary.md
+          echo "**User:** ${{ github.actor }} | **Mode:** ${{ inputs.mode }}" >> migration_summary.md
+          echo "" >> migration_summary.md
+          echo "| Repository | Status | Detail |" >> migration_summary.md
+          echo "| :--- | :--- | :--- |" >> migration_summary.md
+
+      - name: Process Repositories
+        env:
+          GH_TOKEN: ${{ secrets.ORG_ADMIN_TOKEN }}
+          ORG_NAME: ${{ inputs.organization }}
+          REPO_FILTER: ${{ inputs.repo_filter }}
+          MODE: ${{ inputs.mode }}
+          DRY_RUN: ${{ inputs.dry_run }}
+        run: |
+          # 1. Fetch all repos (we filter later in the loop)
+          echo "Fetching repositories for $ORG_NAME..."
+          repos=$(gh repo list $ORG_NAME --limit 2000 --json name --jq '.[] | .name')
+
+          # 2. Define the Python Script (Only needed for Apply mode)
+          cat << 'EOF' > process_repo.py
+          import os
+          import re
+          import sys
+
+          # --- CONFIGURATION ---
+          OLD_DOMAIN = 'hybrid-cloud-patterns.io'
+          NEW_DOMAIN = 'validatedpatterns.io' 
+          NEW_TEAM_ALIAS = 'team-validatedpatterns'
+          IGNORE_MARKER = 'apiVersion: hybrid-cloud-patterns.io'
+
+          mailto_pattern = re.compile(r'(mailto:)([a-zA-Z0-9._%+-]+)(@' + re.escape(OLD_DOMAIN) + r')')
+
+          files_changed = 0
+          extensions_to_check = ['.yaml', '.yml', '.md', '.txt', '.json', '.sh', '.html', '.rst']
+
+          for root, dirs, files in os.walk('.'):
+              if '.git' in dirs: dirs.remove('.git')
+              for file in files:
+                  if not any(file.endswith(ext) for ext in extensions_to_check): continue
+                  file_path = os.path.join(root, file)
+                  try:
+                      with open(file_path, 'r', encoding='utf-8') as f: lines = f.readlines()
+                  except: continue
+
+                  new_lines = []
+                  file_modified = False
+                  for line in lines:
+                      if IGNORE_MARKER in line:
+                          new_lines.append(line)
+                          continue
+                      
+                      original_line = line
+                      if 'mailto:' in line and OLD_DOMAIN in line:
+                          line = mailto_pattern.sub(r'\1' + NEW_TEAM_ALIAS + '@' + NEW_DOMAIN, line)
+                      if OLD_DOMAIN in line:
+                          line = line.replace(OLD_DOMAIN, NEW_DOMAIN)
+                      if line != original_line:
+                          file_modified = True
+                      new_lines.append(line)
+
+                  if file_modified:
+                      with open(file_path, 'w', encoding='utf-8') as f: f.writelines(new_lines)
+                      files_changed += 1
+
+          sys.exit(0 if files_changed > 0 else 1)
+          EOF
+
+          # 3. Loop through repositories
+          BRANCH_NAME="migration/update-domain-references"
+
+          for NAME in $repos; do
+            
+            # --- FILTER LOGIC ---
+            # If repo_filter is set, skip if NAME is not in the list
+            if [[ ! -z "$REPO_FILTER" ]]; then
+              if [[ ",$REPO_FILTER," != *",$NAME,"* ]]; then
+                continue
+              fi
+            fi
+
+            echo "------------------------------------------------"
+            echo "Processing: $NAME"
+
+            # Clone
+            git clone "https://x-access-token:${GH_TOKEN}@github.com/$ORG_NAME/$NAME.git" work_dir
+            cd work_dir
+
+            if [ "$MODE" == "revert" ]; then
+                # --- REVERT MODE ---
+                echo "Attempting to revert changes in $NAME..."
+                
+                # Check if PR exists
+                PR_LIST=$(gh pr list --head $BRANCH_NAME --json number --jq '.[].number')
+                
+                if [ ! -z "$PR_LIST" ]; then
+                   if [ "$DRY_RUN" = "false" ]; then
+                     for pr_num in $PR_LIST; do
+                        gh pr close $pr_num --delete-branch --comment "Closing via automated cleanup."
+                     done
+                     echo "| $NAME | 🧹 Reverted | Closed PRs and deleted branch |" >> ../migration_summary.md
+                   else
+                     echo "| $NAME | ⚠️ Dry Run | Would close PRs and delete branch |" >> ../migration_summary.md
+                   fi
+                else
+                   # Attempt to delete branch even if no PR exists
+                   if git ls-remote --exit-code --heads origin $BRANCH_NAME; then
+                      if [ "$DRY_RUN" = "false" ]; then
+                        git push origin --delete $BRANCH_NAME
+                        echo "| $NAME | 🧹 Cleaned | Branch deleted (No PR found) |" >> ../migration_summary.md
+                      else
+                        echo "| $NAME | ⚠️ Dry Run | Would delete orphan branch |" >> ../migration_summary.md
+                      fi
+                   else
+                      echo "| $NAME | 💨 Skipped | No PR or Branch found |" >> ../migration_summary.md
+                   fi
+                fi
+
+            else
+                # --- APPLY MODE ---
+                git checkout -b $BRANCH_NAME || git checkout $BRANCH_NAME
+
+                # Run Python
+                python3 ../process_repo.py
+                CHANGES_MADE=$?
+
+                if [ $CHANGES_MADE -eq 0 ]; then
+                  if [ "$DRY_RUN" = "false" ]; then
+                    git config user.name "Migration Bot"
+                    git config user.email "migration-bot@validatedpatterns.io"
+                    git add .
+                    git commit -m "refactor: migrate hybrid-cloud-patterns.io to validatedpatterns.io"
+                    git push origin $BRANCH_NAME --force
+                    
+                    PR_URL=$(gh pr create --title "Migrate domain references" --body "Automated migration." --head $BRANCH_NAME --base main 2>/dev/null || echo "PR already exists")
+                    echo "| $NAME | ✅ Migrated | PR Created/Updated |" >> ../migration_summary.md
+                  else
+                    echo "| $NAME | ⚠️ Dry Run | Changes detected |" >> ../migration_summary.md
+                  fi
+                else
+                   echo "| $NAME | 💤 Skipped | No patterns found |" >> ../migration_summary.md
+                fi
+            fi
+
+            # Cleanup local dir
+            cd ..
+            rm -rf work_dir
+          done
+
+      - name: Create Summary Issue
+        if: always()
+        env:
+          GH_TOKEN: ${{ secrets.ORG_ADMIN_TOKEN }}
+        run: |
+          if [ -f migration_summary.md ]; then
+            gh issue create --repo ${{ github.repository }} --title "Migration Report: ${{ inputs.organization }} ($MODE)" --body-file migration_summary.md
+          fi

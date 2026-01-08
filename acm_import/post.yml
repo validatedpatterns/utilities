@@ -8,21 +8,5 @@
         HUBCONFIG: "{{ lookup('env', 'HUBCONFIG') }}"
         SPOKECONFIG: "{{ lookup('env', 'SPOKECONFIG') }}"
 
-    - name: Check for correct HUBCONFIG env variable
-      ansible.builtin.fail:
-        msg: "HUBCONFIG env variable needs to be set and pointing to the HUB kubeconfig file"
-      when:
-        HUBCONFIG is not defined or HUBCONFIG | length == 0
-
-    - name: Check for correct SPOKECONFIG env variable
-      ansible.builtin.fail:
-        msg: "SPOKECONFIG env variable needs to be set and pointing to the SPOKE kubeconfig file"
-      when:
-        SPOKECONFIG is not defined or SPOKECONFIG | length == 0
-
-    - name: Print the hub and spoke kubeconfigs
-      ansible.builtin.debug:
-        msg: "HUBCONFIG: {{ HUBCONFIG }} - SPOKECONFIG: {{ SPOKECONFIG }}"
-
   roles:
     - acm_import

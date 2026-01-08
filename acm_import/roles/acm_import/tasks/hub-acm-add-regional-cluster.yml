@@ -4,91 +4,63 @@
     fail_msg: "region_cluster_name failed regex validation"
     success_msg: "{{ region_cluster_name }} is valid"
 
-- name: "Check if ManagedCluster is registered"
+- name: "Create regional ManagedCluster"
+  kubernetes.core.k8s:
+    state: present
+    template: managedcluster.yml.j2
+
+- name: Ensure regional cluster namespace has been created
   kubernetes.core.k8s_info:
-    kubeconfig: "{{ HUBCONFIG }}"
-    api_version: cluster.open-cluster-management.io/v1
+    api: v1
+    kind: Namespace
+    name: "{{ region_cluster_name }}"
+  register: _acm_namespace_status
+  until:
+    - _acm_namespace_status.resources | length > 0
+  retries: 60
+  delay: 10
+
+# To import the spoke cluster to the hub cluster, we need to create
+# a secret that contains the spoke cluster's kubeconfig.
+# This requires a special formatting, including double line breaks
+# and a correct indentation.
+- name: Create autoimport secret
+  block:
+    - name: Get kubeconfig content
+      ansible.builtin.slurp:
+        src: "{{ SPOKECONFIG }}"
+      register: _acm_region_kubeconfig_content
+      no_log: true
+
+    - name: Save kubeconfig content in a variable
+      ansible.builtin.set_fact:
+        acm_region_kubeconfig: "{{ _acm_region_kubeconfig_content['content'] | b64decode }}"
+      no_log: true
+
+    - name: Apply Secret to attach spoke cluster to hub cluster
+      kubernetes.core.k8s:
+        state: present
+        definition: "{{ lookup('ansible.builtin.template', 'autoimport_secret.yml.j2') | from_yaml }}"
+      no_log: true
+
+# To correctly join the hub cluster, ManagedClusterJoined condition must be True.
+- name: Ensure ManagedCluster has joined the hub cluster
+  kubernetes.core.k8s_info:
+    api: cluster.open-cluster-management.io/v1
     kind: ManagedCluster
     name: "{{ region_cluster_name }}"
-  register: ocm_mc_obj
-
-- name: "Set fact if regional cluster is registered"
-  ansible.builtin.set_fact:
-    ocm_mc_registered: "{{ ocm_mc_obj.resources | length == 1 }}"
-
-- name: Register Managed Cluster
-  when:
-    - not ocm_mc_registered
-  block:
-    - name: "Create regional ManagedCluster"
-      kubernetes.core.k8s:
-        state: present
-        kubeconfig: "{{ HUBCONFIG }}"
-        template: managedcluster.yml.j2
-        wait: true
-        wait_condition:
-          type: 'HubAcceptedManagedCluster'
-          reason: 'HubClusterAdminAccepted'
-          status: 'True'
-        wait_timeout: 60
-      register: create_regional
-      until: create_regional is not failed
-      retries: 10
-      delay: 10
-
-    - name: "Create regional KlusterAddonConfig"
-      kubernetes.core.k8s:
-        state: present
-        kubeconfig: "{{ HUBCONFIG }}"
-        template: klusterletaddonconfig.yml.j2
-
-- name: "Pull ManagedClusterJoined Status"
-  ansible.builtin.set_fact:
-    ocm_mc_status: >
-      "{{ lookup('kubernetes.core.k8s', kubeconfig=HUBCONFIG, api_version='cluster.open-cluster-management.io/v1',
-      kind='ManagedCluster', resource_name=region_cluster_name) | json_query(query) }}"
+  register: _acm_managedcluster_status
   vars:
-    query: "status.conditions[?type == 'ManagedClusterJoined'].status"
+    _acm_status_query: "resources[0].status.conditions[?type=='ManagedClusterJoined'].status"
+    _acm_update_status: "{{ _acm_managedcluster_status | json_query(_acm_status_query) | flatten | unique }}"  # noqa: jinja[invalid]
+  until:
+    - _acm_managedcluster_status.resources is defined
+    - _acm_managedcluster_status.resources | length > 0
+    - _acm_update_status == ['True']
+  retries: 30
+  delay: 10
 
-- name: "Determine if Managed Cluster has Joined"
-  ansible.builtin.set_fact:
-    ocm_mc_reported: "{{ ocm_mc_status | length == 1 and ocm_mc_status[0] == 'True' }}"
-
-- name: Attach Managed Cluster
-  when: not ocm_mc_reported
-  block:
-    - name: "[HUB] Derive import name"
-      ansible.builtin.set_fact:
-        cluster_import: "{{ region_cluster_name }}-import"
-
-    - name: "[HUB] Get CRDs from Hub for the new ManagedCluster"
-      ansible.builtin.set_fact:
-        import_crds: >
-          "{{ lookup('k8s', kubeconfig=HUBCONFIG, api_version='v1', kind='Secret', namespace=region_cluster_name,
-          resource_name=cluster_import) | json_query(query) }}"
-      vars:
-        query: "data.\"crds.yaml\""
-
-    - name: "[HUB] Get ROs from Hub for the new ManagedCluster"
-      ansible.builtin.set_fact:
-        import_ros: >
-          "{{ lookup('k8s', kubeconfig=HUBCONFIG, api_version='v1', kind='Secret', namespace=region_cluster_name,
-          resource_name=cluster_import) | json_query(query) }}"
-      vars:
-        query: "data.\"import.yaml\""
-
-    - name: "[MC] Apply CRDs to new ManagedCluster"
-      kubernetes.core.k8s:
-        state: present
-        kubeconfig: "{{ SPOKECONFIG }}"
-        definition: "{{ import_crds | b64decode }}"
-      retries: 10
-      delay: 20
-
-    - name: "[MC] Apply ROs to new ManagedCluster"
-      kubernetes.core.k8s:
-        state: present
-        kubeconfig: "{{ SPOKECONFIG }}"
-        definition: "{{ import_ros | b64decode }}"
-      retries: 10
-      delay: 20
+- name: "Create regional KlusterAddonConfig"
+  kubernetes.core.k8s:
+    state: present
+    template: klusterletaddonconfig.yml.j2

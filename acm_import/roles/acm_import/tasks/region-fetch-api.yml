@@ -7,8 +7,11 @@
     region_api: "{{ cluster_info['connection']['host'] }}"
 
 - name: Find regional cluster name
-  ansible.builtin.shell: |
-    oc get dns cluster -o jsonpath='{.spec.baseDomain}{"\n"}' | cut -d. -f1
+  ansible.builtin.shell:
+    cmd: |
+      set -o pipefail
+      oc get dns cluster -o jsonpath='{.spec.baseDomain}{"\n"}' | cut -d. -f1
+    executable: /bin/bash
   register: region_cluster_oc
   changed_when: false
 

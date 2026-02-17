@@ -10,7 +10,7 @@ triggers:
     versions:
     - '4.21'
     - '4.20'
-    - '4.19'
+    - '4.18'
 
   openshift:
   - version: '4.21'
@@ -23,7 +23,7 @@ triggers:
     platforms:
       - aws
     buildType: stable
-  - version: '4.19'
+  - version: '4.18'
     branch: main
     platforms:
       - azure

@@ -8,18 +8,18 @@ triggers:
   branches:
   - name: rhoai
     versions:
+    - '4.21'
     - '4.20'
-    - '4.19'
     - '4.18'
 
   openshift:
-  - version: '4.20'
+  - version: '4.21'
     branch: rhoai
     platforms:
       - aws
       - baremetal
     buildType: stable
-  - version: '4.19'
+  - version: '4.20'
     branch: rhoai
     platforms:
       - aws

@@ -3,7 +3,7 @@ fullName: IndustrialEdge
 repo: https://github.com/validatedpatterns/industrial-edge
 webHookName: ''
 owners:
-  - martjack
+  - mbaldess
 triggers:
   branches:
   - name: main

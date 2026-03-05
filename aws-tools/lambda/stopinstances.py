@@ -1,7 +1,7 @@
 import boto3
 
 # Array of regions we want to scan for running instances
-regions = ["us-west-1", "us-west-2", "us-east-1", "us-east-2"]
+regions = ["us-west-1", "us-west-2", "us-east-1", "us-east-2", "ap-southeast-1"]
 
 # Dictionary that holds the key/value pair for each region
 # key = key e.g. 'us-west-1'

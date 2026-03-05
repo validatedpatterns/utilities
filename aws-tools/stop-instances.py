@@ -5,7 +5,7 @@ import sys
 import getopt
 
 filter = ""
-regions = ["us-west-1", "us-west-2", "us-east-1", "us-east-2"]
+regions = ["us-west-1", "us-west-2", "us-east-1", "us-east-2", "ap-southeast-1"]
 # regions=['us-east-2']
 allInstances = {}
 

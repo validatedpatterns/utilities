@@ -5,7 +5,7 @@ from botocore.exceptions import ClientError
 import sys
 import getopt
 
-regions = ["us-west-1", "us-west-2", "us-east-1", "us-east-2"]
+regions = ["us-west-1", "us-west-2", "us-east-1", "us-east-2", "ap-southeast-1"]
 aws_access_key_id = os.environ["AWS_ACCESS_KEY_ID"]
 aws_secret_access_key = os.environ["AWS_SECRET_ACCESS_KEY"]
 

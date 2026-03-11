@@ -5,7 +5,8 @@ regions = ["us-west-1", "us-west-2", "us-east-1", "us-east-2"]
 
 # Dictionary that holds the key/value pair for each region
 # key = key e.g. 'us-west-1'
-# value = array e.g. ['i-003cf2aedc58219bf', 'i-0852da9f9b599e873', 'i-06b7b658e21e5e726', 'i-00fa6d35fea24c33b', 'i-0f5746bb760cab75b', 'i-021ec39d1d4bf6c7e']
+# value = array e.g. ['i-003cf2aedc58219bf', 'i-0852da9f9b599e873',
+#   'i-06b7b658e21e5e726', 'i-00fa6d35fea24c33b']
 allInstances = {}
 
 # Array of instances that are running for a region and we want to stop

@@ -18,16 +18,19 @@ triggers:
     platforms:
       - azure
     buildType: stable
+    ocpTrigger: false
   - version: '4.20'
     branch: 'main'
     platforms:
       - azure
     buildType: stable
+    ocpTrigger: false
   - version: '4.18'
     branch: 'main'
     platforms:
       - azure
     buildType: stable
+    ocpTrigger: false
 
   subscriptions:
   - name: none

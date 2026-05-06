@@ -16,6 +16,7 @@ triggers:
     platforms:
       - aws
     buildType: stable
+    ocpTrigger: false
 
   subscriptions:
   - name: none

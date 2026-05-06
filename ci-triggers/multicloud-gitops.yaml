@@ -18,16 +18,19 @@ triggers:
     platforms:
       - aws
     buildType: stable
+    ocpTrigger: true
   - version: '4.20'
     branch: main
     platforms:
       - aws
     buildType: stable
+    ocpTrigger: true
   - version: '4.18'
     branch: main
     platforms:
       - azure
     buildType: stable
+    ocpTrigger: true
 
   subscriptions:
   - name: gitops

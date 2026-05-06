@@ -19,15 +19,18 @@ triggers:
       - aws
       - baremetal
     buildType: stable
+    ocpTrigger: false
   - version: '4.20'
     branch: rhoai
     platforms:
       - aws
       - baremetal
     buildType: stable
+    ocpTrigger: false
   - version: '4.18'
     branch: rhoai
     platforms:
       - aws
       - baremetal
     buildType: stable
+    ocpTrigger: false

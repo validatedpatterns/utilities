@@ -67,9 +67,9 @@ GITEA_USER=$(oc extract -n vp-gitea secret/gitea-admin-secret --to=- --keys=user
 GITEA_PASS=$(oc extract -n vp-gitea secret/gitea-admin-secret --to=- --keys=password 2>/dev/null)
 echo "Got gitea credentials"
 
-UPSTREAM_REPO=$(oc get patterns -n openshift-operators  -o yaml | yq '.items[0].spec.gitSpec.originRepo')
+UPSTREAM_REPO=$(oc get patterns -n patterns-operator -o yaml | yq '.items[0].spec.gitSpec.originRepo')
 REPO_NAME=$(basename "${UPSTREAM_REPO}")
-GITEA_REPO=$(oc get patterns -n openshift-operators  -o yaml | yq '.items[0].spec.gitSpec.targetRepo')
+GITEA_REPO=$(oc get patterns -n patterns-operator -o yaml | yq '.items[0].spec.gitSpec.targetRepo')
 GITEA_ROUTE=$(oc get routes -n vp-gitea gitea-route -o yaml | yq '.spec.host')
 
 if [ -z "${REPO_NAME}" ]; then

@@ -8,24 +8,24 @@ triggers:
   branches:
   - name: main
     versions:
+    - '4.22'
     - '4.21'
     - '4.20'
-    - '4.18'
 
   openshift:
+  - version: '4.22'
+    branch: main
+    platforms:
+      - aws
+    buildType: stable
+    ocpTrigger: false
+  - version: '4.21'
+    branch: main
+    platforms:
+      - aws
+    buildType: stable
+    ocpTrigger: false
   - version: '4.20'
-    branch: main
-    platforms:
-      - aws
-    buildType: stable
-    ocpTrigger: false
-  - version: '4.19'
-    branch: main
-    platforms:
-      - aws
-    buildType: stable
-    ocpTrigger: false
-  - version: '4.18'
     branch: main
     platforms:
       - aws
